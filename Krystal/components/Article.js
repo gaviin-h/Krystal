@@ -25,7 +25,7 @@ const Style=StyleSheet.create({
 
 function Article({ title, author, description, navigation, key}) {
   return (
-    <TouchableOpacity style={Style.container} onPress={navigation.navigate('article'+key)}>
+    <TouchableOpacity style={Style.container} onPress={navigation.navigate(String('article'+key))}>
       <Text style={Style.title}>
         {title}
       </Text>
