@@ -1,6 +1,5 @@
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, StyleSheet} from 'react-native';
 import React, { useState } from 'react';
-import {StyleSheet} from 'react-native'
 
 function CreateAccount({navigation}) {
   const [ email, setEmail ] = useState(null)
@@ -10,10 +9,10 @@ function CreateAccount({navigation}) {
   const [ confirmPass, setConfirmPass ] = useState(null)
 
   function validEmail(){
-    return email.includes('@') && email.includes('.')
+    return email && email.includes('@') && email.includes('.')
   }
   function verifyUserDetails() {
-    if( pass===confirmPass){
+    if( pass && pass===confirmPass){
       if(validEmail()){
         navigation.navigate('login')
       }else{
