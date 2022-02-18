@@ -7,11 +7,14 @@ const Style=StyleSheet.create({
 
   }
 })
-function Main({ search, queue, navigation}){
+function Main({ search, queue, navigation, setCurrentArticle}){
   return (
     <View >
       <Search search={search}/>
-      <Listings queue={queue} navigation={navigation}/>
+      <Listings 
+        queue={queue} 
+        navigation={navigation}
+        setCurrentArticle={setCurrentArticle}/>
     </View>
 
   )

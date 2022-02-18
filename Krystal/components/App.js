@@ -9,10 +9,15 @@ import Login from './Login';
 import CreateAccount from './CreateAccount';
 import Header from './Header'
 import Main from './Main'
+import ArticlePage from './ArticlePage'
 
 const Stack = createNativeStackNavigator();
 
-// search 
+
+// APP FUNCTION CALL 
+const App = () => {
+
+  // search 
 async function search(query){
   const date = new Date()
   const ApiKey='c86e67c82f1e44e29fb5dd30095fb55b'
@@ -24,17 +29,15 @@ async function search(query){
   fetch(req).then(function(response) {
     response.json().then((data)=>{
         // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
-        setQueue(data.articles[0,10])
+        setQueue(data.articles.slice(0,3))
+      })
     })
-  })
 }
-
-// APP FUNCTION CALL 
-const App = () => {
 
 // State
 const [ userInfo, setUserInfo ] = useState(null)
 const [ showMenu, setShowMenu ] = useState(false)
+const [ currentArticle, setCurrentArticle ] = useState(null)
 const [ queue, setQueue ] = useState([
     {
       key: 1,
@@ -54,7 +57,7 @@ const [ queue, setQueue ] = useState([
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="test"
+        initialRouteName="login"
         screenOptions={{ 
           // headerStyle: {
           // },
@@ -76,11 +79,17 @@ const [ queue, setQueue ] = useState([
             createAccount={setUserInfo} 
             navigation={props.navigation} />}
         </Stack.Screen>
-        <Stack.Screen name='test'>
+        <Stack.Screen name='main'>
             { props => <Main 
             queue={queue}
             navigation={props.navigation}
-            search={search}/>}
+            search={search}
+            setCurrentArticle={setCurrentArticle}/>}
+        </Stack.Screen>
+        <Stack.Screen name='articlePage'>
+            { props => <ArticlePage 
+            navigation={props.navigation}
+            article={currentArticle}/>}
         </Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
