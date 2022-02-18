@@ -17,6 +17,7 @@ async function make_request(search_term){
     var req=new Request(url)
     fetch(req).then(function(response) {
         response.json().then((data)=>{
+            console.log(data)
             // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
             update_page(data.articles[0].title, data.articles[0].description)
         })

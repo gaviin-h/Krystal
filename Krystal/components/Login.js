@@ -30,7 +30,10 @@ function Login({ navigation, attemptLogin }){
         onChangeText={text => setPass(text)} 
         secureTextEntry={true}/>
 
-      <Button onPress={() => attemptLogin([user, pass])} title='login'/>
+      <Button onPress={() => {
+        attemptLogin([user, pass])
+        navigation.navigate('main')}} 
+        title='login'/>
       <Button 
         color='grey' 
         title='create account' 
