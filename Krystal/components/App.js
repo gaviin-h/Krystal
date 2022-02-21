@@ -9,6 +9,7 @@ import Login from './Login';
 import CreateAccount from './CreateAccount';
 import Header from './Header'
 import Listings from './Listings'
+import AccountSettings from './AccountSettings';
 
 const Stack = createNativeStackNavigator();
 
@@ -37,7 +38,7 @@ const [ queue, setQueue ] = useState([
   return (
     <NavigationContainer>
       <Stack.Navigator 
-        initialRouteName="test"
+        initialRouteName="AccountSettings"
         screenOptions={{ 
           // headerStyle: {
           // },
@@ -49,6 +50,10 @@ const [ queue, setQueue ] = useState([
             <Header setShowMenu={setShowMenu}/>
           )
         }}>
+          <Stack.Screen name="Account Settings">
+          { props => <AccountSettings 
+              navigation={props.navigation} />}
+        </Stack.Screen>
         <Stack.Screen name="login">
           { props => <Login 
               attemptLogin={setUserInfo}
