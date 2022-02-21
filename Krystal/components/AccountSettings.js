@@ -63,7 +63,7 @@ function AccountSettings(navigation){
           <Button 
             color='grey' 
             title='Save' 
-            onPress={() => navigation.navigate("Login")}/>
+            onPress={() => navigation.navigate("login")}/>
             <Text style={Style.title}>
              {"Block List:"}
              </Text>
@@ -73,7 +73,7 @@ function AccountSettings(navigation){
            <Button 
             color='grey' 
             title='Add' 
-            onPress={() => navigation.navigate("Login")}/>
+            onPress={() => navigation.navigate("login")}/>
 
         </View>
       )
