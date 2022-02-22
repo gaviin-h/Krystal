@@ -2,15 +2,13 @@ import { View} from 'react-native';
 import React from 'react';
 import Article from './Article'
 
-function Listings({queue, navigation}) {
+function Listings({queue, navigation, setCurrentArticle }) {
   return (
     <View >
       { queue.map((article) => 
       ( <Article 
-        title={article.title} 
-        author={article.author} 
-        description={article.description}
-        key={article.key}
+        setCurrentArticle={setCurrentArticle}
+        article={article}
         navigation={navigation}
         /> )) }
     </View>

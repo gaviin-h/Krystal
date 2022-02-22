@@ -23,17 +23,21 @@ const Style=StyleSheet.create({
 
 })
 
-function Article({ title, author, description, navigation, key}) {
+function Article({ article, navigation, setCurrentArticle}) {
   return (
-    <TouchableOpacity style={Style.container} onPress={navigation.navigate('article'+key)}>
+    <TouchableOpacity 
+      style={Style.container} 
+      onPress={ () => {
+        setCurrentArticle(article)
+        navigation.navigate('articlePage')}}>
       <Text style={Style.title}>
-        {title}
+        {article.title}
       </Text>
       <Text style={Style.author}>
-        {author}
+        {article.author}
       </Text>
       <Text style={Style.description}>
-        {description}
+        {article.description}
       </Text>
     </TouchableOpacity>
   )
