@@ -1,5 +1,7 @@
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import React from 'react';
+import MyWeb from './MyWeb'
+
 
 const Style=StyleSheet.create({
   title:{
@@ -9,17 +11,14 @@ const Style=StyleSheet.create({
     marginTop: 20
   },
   content:{
-    padding: 20,
-    marginTop: 20
+    flex: 1,
+    backgroundColor: '#fff',
+    justifyContent: 'center',
   }
 })
 function ArticlePage({ navigation, article }){
   return (
-    <View>
-      <Text style={Style.title} >{article.title}</Text>
-      <Text style={Style.content}>{article.content} </Text>
-    </View>
+    <MyWeb url= {article.url}/>
   )
 }
-
 export default ArticlePage
