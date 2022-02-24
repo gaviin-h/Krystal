@@ -24,7 +24,7 @@ function Header({ setShowMenu }) {
   })
   return (
     <View style={Style.view}>
-      <Icon style={Style.barsIcon} name='bars' size={30} onPress={setShowMenu(true)}/>
+      <Icon style={Style.barsIcon} name='bars' size={30} onPress={() => setShowMenu(true)}/>
       <Image 
         style={Style.image}
         source={logo}
