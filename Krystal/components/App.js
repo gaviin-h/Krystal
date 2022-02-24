@@ -43,13 +43,15 @@ const [ queue, setQueue ] = useState([
       key: 1,
       title: 'Stone Burns',
       author: 'Gavin Newsom',
-      description: 'The end times are upon us'
+      description: 'The end times are upon us',
+      url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html'
     },
     {
       key: 2,
       title: 'Butterfly Away',
       author: 'Miley Cyrus',
-      description: 'Idk I dont listen to Miley'
+      description: 'Idk I dont listen to Miley',
+      url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic'
     }
 ])
 

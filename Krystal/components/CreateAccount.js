@@ -16,10 +16,10 @@ function CreateAccount({navigation}) {
       if(validEmail()){
         navigation.navigate('login')
       }else{
-        alert("email bs")
+        alert("Email Invalid")
       }
     }else{
-      alert('password bs')
+      alert('Check Password')
     }
   }
   const Style = StyleSheet.create({
