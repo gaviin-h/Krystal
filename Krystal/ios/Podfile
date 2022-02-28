@@ -12,6 +12,11 @@ target 'Krystal' do
     :hermes_enabled => false
   )
 
+
+  pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'KrystalTests' do
     inherit! :complete
     # Pods for testing
