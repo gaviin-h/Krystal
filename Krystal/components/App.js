@@ -2,22 +2,49 @@
  *  KRYSTAL 
  *  Application hub
  */
+import 'react-native-gesture-handler'
 import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
+import { LogBox } from 'react-native';
 import Login from './Login';  
 import CreateAccount from './CreateAccount';
 import Header from './Header'
 import Main from './Main'
 import ArticlePage from './ArticlePage'
 
+// LogBox.ignoreAllLogs()
 const Stack = createNativeStackNavigator();
+const Drawer = createDrawerNavigator();
 
+const HomeDrawer = ({drawerNav, queue, search, setCurrentArticle, currentArticle}) => {
+  return(
+    <Stack.Navigator initialRouteName='home'
+      screenOptions={{ 
+          headerTitle: () => 
+            <Header 
+              navigation={drawerNav}/>}}>
+      <Stack.Screen name='home'>
+        { props => <Main 
+        queue={queue}
+        navigation={props.navigation}
+        search={search}
+        setCurrentArticle={setCurrentArticle}/>}
+      </Stack.Screen>
+      <Stack.Screen name='articlePage'>
+        { props => <ArticlePage 
+        navigation={props.navigation}
+        article={currentArticle}/>}
+      </Stack.Screen>
+    </Stack.Navigator>
+  )
+}
 
 // APP FUNCTION CALL 
 const App = () => {
 
-  // search 
+// search 
 async function search(query){
   const date = new Date()
   const ApiKey='c86e67c82f1e44e29fb5dd30095fb55b'
@@ -57,44 +84,46 @@ const [ queue, setQueue ] = useState([
 
 // RETURN
   return (
-    <NavigationContainer>
-      <Stack.Navigator 
-        initialRouteName="login"
+    !userInfo? 
+      <NavigationContainer>
+        <Stack.Navigator
+          initialRouteName="login"
+          >
+          <Stack.Screen name="login">
+              { props => <Login 
+                  attemptLogin={setUserInfo}
+                  navigation={props.navigation} />}
+            </Stack.Screen>
+            <Stack.Screen name="createAccount">
+              { props => <CreateAccount
+                createAccount={setUserInfo} 
+                navigation={props.navigation} />}
+            </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer> 
+    : 
+      <NavigationContainer>
+        <Drawer.Navigator initialRouteName='home'
         screenOptions={{ 
-          // headerStyle: {
-          // },
-          // headerTintColor: '#fff', // Font color
-          headerTitleStyle: {
-            color: 'rgba(0,0,0,0)',
-          },
-          headerBackground: () => (
-            <Header setShowMenu={setShowMenu}/>
-          )
-        }}>
-        <Stack.Screen name="login">
-          { props => <Login 
-              attemptLogin={setUserInfo}
-              navigation={props.navigation} />}
-        </Stack.Screen>
-        <Stack.Screen name="createAccount">
-          { props => <CreateAccount
-            createAccount={setUserInfo} 
-            navigation={props.navigation} />}
-        </Stack.Screen>
-        <Stack.Screen name='main'>
-            { props => <Main 
+          headerShown: false
+        }} 
+        drawerContent={props => {
+          return (
+            <DrawerContentScrollView {...props}>
+              <DrawerItemList {...props} />
+              <DrawerItem label="logout" onPress={() => setUserInfo(null)}/>
+            </DrawerContentScrollView>
+          )}}>
+          <Drawer.Screen name='home'>
+            { props => <HomeDrawer 
             queue={queue}
-            navigation={props.navigation}
+            drawerNav={props.navigation}
             search={search}
-            setCurrentArticle={setCurrentArticle}/>}
-        </Stack.Screen>
-        <Stack.Screen name='articlePage'>
-            { props => <ArticlePage 
-            navigation={props.navigation}
-            article={currentArticle}/>}
-        </Stack.Screen>
-      </Stack.Navigator>
-    </NavigationContainer>
+            setCurrentArticle={setCurrentArticle}
+            currentArticle={currentArticle}/>}
+          </Drawer.Screen>
+        </Drawer.Navigator>
+      </NavigationContainer>
   );
 };
 

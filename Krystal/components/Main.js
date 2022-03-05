@@ -16,7 +16,6 @@ function Main({ search, queue, navigation, setCurrentArticle}){
         navigation={navigation}
         setCurrentArticle={setCurrentArticle}/>
     </View>
-
   )
 }
 export default Main
