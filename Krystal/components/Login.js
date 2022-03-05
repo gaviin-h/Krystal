@@ -31,8 +31,7 @@ function Login({ navigation, attemptLogin }){
         secureTextEntry={true}/>
 
       <Button onPress={() => {
-        attemptLogin([user, pass])
-        navigation.navigate('main')}} 
+        attemptLogin([user, pass])}} 
         title='login'/>
       <Button 
         color='grey' 

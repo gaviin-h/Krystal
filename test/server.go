@@ -5,12 +5,13 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"os"
 )
 
 func main() {
 	fileServer := http.FileServer(http.Dir("./"))
 	http.Handle("/", fileServer)
-	http.HandleFunc("/hello", helloHandler)
+	// http.HandleFunc("/hello", helloHandler)
 	http.HandleFunc("/filter", filterHandler)
 
 	fmt.Printf("Starting server at port 8080\n")
@@ -46,14 +47,13 @@ func filterHandler(w http.ResponseWriter, r *http.Request) {
 	if err1 != nil {
 		log.Fatal(err1)
 	}
-	fmt.Println(string(body))
-	// f, err := os.Create("data.txt")
-	// if err != nil {
-	// 	log.Fatal(err)
-	// }
-	// _, err2 := f.WriteString(term)
-	// if err2 != nil {
-	// 	log.Fatal(err2)
-	// }
-	// f.Close()
+	f, err := os.Create("data.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+	_, err2 := f.WriteString(string(body))
+	if err2 != nil {
+		log.Fatal(err2)
+	}
+	f.Close()
 }
