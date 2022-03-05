@@ -56,7 +56,7 @@ async function search(query){
   fetch(req).then(function(response) {
     response.json().then((data)=>{
         // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
-        setQueue(data.articles.slice(0,3))
+        setQueue(data.articles.slice(0,20))
       })
     })
 }
