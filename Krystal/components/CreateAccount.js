@@ -1,11 +1,11 @@
 import { View, TextInput, Button, StyleSheet} from 'react-native';
 import React, { useState } from 'react';
 
-function CreateAccount({navigation}) {
+function CreateAccount({navigation, Auth, setUserInfo}) {
   const [ email, setEmail ] = useState(null)
   const [ pass, setPass ] = useState(null)
   const [ firstName, setFirst ] = useState(null)
-  const [ LastName, setLast ] = useState(null)
+  const [ lastName, setLast ] = useState(null)
   const [ confirmPass, setConfirmPass ] = useState(null)
 
   function validEmail(){
@@ -14,12 +14,24 @@ function CreateAccount({navigation}) {
   function verifyUserDetails() {
     if( pass && pass===confirmPass){
       if(validEmail()){
-        navigation.navigate('login')
+        return true
+        // navigation.navigate('login')
       }else{
         alert("Email Invalid")
+        return false
       }
     }else{
       alert('Check Password')
+      return false
+    }
+  }
+  async function createAccount(){
+    if (verifyUserDetails()){
+      try {
+        await Auth.signUp({email, pass, attributes: {firstName, lastName}})
+      }catch (error) {
+        alert(error)
+      }
     }
   }
   const Style = StyleSheet.create({
@@ -64,7 +76,7 @@ function CreateAccount({navigation}) {
         onChangeText={text => setConfirmPass(text)} 
         secureTextEntry={true}/>
 
-      <Button onPress={() => {verifyUserDetails()}} title='confirm'/>
+      <Button onPress={() => {createAccount()}} title='confirm'/>
     </View>
   )
 }

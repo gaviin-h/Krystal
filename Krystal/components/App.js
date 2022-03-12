@@ -14,6 +14,16 @@ import Header from './Header'
 import Main from './Main'
 import ArticlePage from './ArticlePage'
 
+// Amplify AWS stuff
+import { Amplify, Auth } from 'aws-amplify'
+import awsconfig from '../src/aws-exports'
+Amplify.configure({
+  ...awsconfig,
+  Analytics: {
+    disabled: true,
+  },
+});
+
 // LogBox.ignoreAllLogs()
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -92,11 +102,13 @@ const [ queue, setQueue ] = useState([
           <Stack.Screen name="login">
               { props => <Login 
                   attemptLogin={setUserInfo}
+                  Auth = { Auth }
                   navigation={props.navigation} />}
             </Stack.Screen>
             <Stack.Screen name="createAccount">
               { props => <CreateAccount
-                createAccount={setUserInfo} 
+                setUserInfo={setUserInfo} 
+                Auth = { Auth }
                 navigation={props.navigation} />}
             </Stack.Screen>
         </Stack.Navigator>
