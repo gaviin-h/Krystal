@@ -14,6 +14,16 @@ import Header from './Header'
 import Main from './Main'
 import ArticlePage from './ArticlePage'
 
+// Amplify AWS stuff
+import { Amplify, Auth } from 'aws-amplify'
+import awsconfig from '../src/aws-exports'
+Amplify.configure({
+  ...awsconfig,
+  Analytics: {
+    disabled: true,
+  },
+});
+
 // LogBox.ignoreAllLogs()
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -60,10 +70,16 @@ async function search(query){
       })
     })
 }
-
+async function attemptLogin(user, pass){
+  try {
+    const attempt = await Auth.signIn(user, pass)
+    setUserInfo([attempt.attributes.email, attempt.attributes.given_name, attempt.attributes.family_name])
+  }catch(error){
+    alert(error)
+  }
+}
 // State
 const [ userInfo, setUserInfo ] = useState(null)
-const [ showMenu, setShowMenu ] = useState(false)
 const [ currentArticle, setCurrentArticle ] = useState(null)
 const [ queue, setQueue ] = useState([
     {
@@ -91,12 +107,14 @@ const [ queue, setQueue ] = useState([
           >
           <Stack.Screen name="login">
               { props => <Login 
-                  attemptLogin={setUserInfo}
+                  attemptLogin={attemptLogin}
+                  Auth = { Auth }
                   navigation={props.navigation} />}
             </Stack.Screen>
             <Stack.Screen name="createAccount">
               { props => <CreateAccount
-                createAccount={setUserInfo} 
+                setUserInfo={setUserInfo} 
+                Auth = { Auth }
                 navigation={props.navigation} />}
             </Stack.Screen>
         </Stack.Navigator>
