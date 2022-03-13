@@ -1,12 +1,14 @@
 import { View, TextInput, Button, StyleSheet} from 'react-native';
 import React, { useState } from 'react';
 
-function CreateAccount({navigation}) {
+function CreateAccount({navigation, Auth}) {
   const [ email, setEmail ] = useState(null)
   const [ pass, setPass ] = useState(null)
   const [ firstName, setFirst ] = useState(null)
-  const [ LastName, setLast ] = useState(null)
+  const [ lastName, setLast ] = useState(null)
   const [ confirmPass, setConfirmPass ] = useState(null)
+  const [ attmpted, setAttempted ] = useState(false)
+  const [ confirmCode, setConfirmCode ] = useState(null)
 
   function validEmail(){
     return email && email.includes('@') && email.includes('.')
@@ -14,12 +16,41 @@ function CreateAccount({navigation}) {
   function verifyUserDetails() {
     if( pass && pass===confirmPass){
       if(validEmail()){
-        navigation.navigate('login')
+        return true
+        // navigation.navigate('login')
       }else{
-        alert("email bs")
+        alert("Email Invalid")
+        return false
       }
     }else{
-      alert('password bs')
+      alert('Check Password')
+      return false
+    }
+  }
+  async function createAccount(){
+    if (verifyUserDetails()){
+      try {
+        await Auth.signUp({
+          username: email, 
+          password: pass, 
+          attributes: {
+            email: email,
+            given_name: firstName, 
+            family_name: lastName
+          }})
+          setAttempted(true)
+      }catch (error) {
+        alert(error)
+      }
+    }
+  }
+  async function confirmSignUp() {
+    try {
+      let conf = await Auth.confirmSignUp(email, confirmCode)
+      alert(conf)
+      navigation.navigate('login')
+    }catch(error) {
+      alert(error)
     }
   }
   const Style = StyleSheet.create({
@@ -38,6 +69,7 @@ function CreateAccount({navigation}) {
   })
 
   return (
+    !attmpted? 
     <View>
       <TextInput 
         style={Style.login_element} 
@@ -52,7 +84,8 @@ function CreateAccount({navigation}) {
       <TextInput 
         style={Style.login_element} 
         placeholder='user@email.com' 
-        onChangeText={text => setEmail(text)}/>
+        onChangeText={text => setEmail(text)}
+        autoCorrect={false}/>
 
       <TextInput style={Style.login_element} 
         placeholder='password' 
@@ -64,7 +97,15 @@ function CreateAccount({navigation}) {
         onChangeText={text => setConfirmPass(text)} 
         secureTextEntry={true}/>
 
-      <Button onPress={() => {verifyUserDetails()}} title='confirm'/>
+      <Button onPress={() => {createAccount()}} title='confirm'/>
+    </View> :
+    <View>
+      <TextInput style={Style.login_element} 
+        value={confirmCode}
+        placeholder='code' 
+        onChangeText={text => setConfirmCode(text)} />
+
+      <Button onPress={() => { confirmSignUp() }} title='confirm'/>
     </View>
   )
 }

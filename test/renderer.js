@@ -39,13 +39,20 @@ async function tester(search){
 }
 var resp
 async function make_filter(filter){
-    var url='https://littlesis.org/api/entities/search?q='+filter
-    var req=new Request(url)
+    // var url='https://littlesis.org/api/entities/search?q='+filter
+    // var req=new Request(url)
+    // fetch(req).then(function(response){
+    //     response.json().then((r)=>{
+    //         var name=r.data[0].attributes.name
+    //         var desc=r.data[0].attributes.blurb
+    //         update_page(name, desc)
+    //     })
+    // })
+    var url='https://localhost:8080/filter'
+    var req=new Request(url, {method: 'POST', body: '{filter: '+filter+'}'})
     fetch(req).then(function(response){
         response.json().then((r)=>{
-            var name=r.data[0].attributes.name
-            var desc=r.data[0].attributes.blurb
-            update_page(name, desc)
+            resp=r
         })
     })
 }

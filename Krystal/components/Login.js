@@ -24,15 +24,15 @@ function Login({ navigation, attemptLogin }){
       <TextInput 
         style={Style.login_element} 
         placeholder='user@email.com' 
-        onChangeText={text => setUser(text)}/>
+        onChangeText={text => setUser(text)}
+        autoCorrect={false}/>
       <TextInput style={Style.login_element} 
         placeholder='password' 
         onChangeText={text => setPass(text)} 
         secureTextEntry={true}/>
 
       <Button onPress={() => {
-        attemptLogin([user, pass])
-        navigation.navigate('main')}} 
+        attemptLogin(user, pass)}} 
         title='login'/>
       <Button 
         color='grey' 

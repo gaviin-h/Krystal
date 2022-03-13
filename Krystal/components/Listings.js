@@ -1,17 +1,17 @@
-import { View} from 'react-native';
+import { ScrollView} from 'react-native';
 import React from 'react';
 import Article from './Article'
 
 function Listings({queue, navigation, setCurrentArticle }) {
   return (
-    <View >
+    <ScrollView >
       { queue.map((article) => 
       ( <Article 
         setCurrentArticle={setCurrentArticle}
         article={article}
         navigation={navigation}
         /> )) }
-    </View>
+    </ScrollView>
   )
 }
 export default Listings

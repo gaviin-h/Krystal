@@ -26,6 +26,8 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+    <true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -70,5 +72,13 @@
 		<string>SimpleLineIcons.ttf</string>
 		<string>Zocial.ttf</string>
 	</array>
+	<key>LSApplicationQueriesSchemes</key>
+	<array> 
+		<string>http</string>
+		<string>https</string>
+		<string>about</string>
+	</array>
+	<key>App Sandbox</key>
+	<true/>
 </dict>
 </plist>
