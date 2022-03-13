@@ -70,10 +70,16 @@ async function search(query){
       })
     })
 }
-
+async function attemptLogin(user, pass){
+  try {
+    const attempt = await Auth.signIn(user, pass)
+    setUserInfo([attempt.attributes.email, attempt.attributes.given_name, attempt.attributes.family_name])
+  }catch(error){
+    alert(error)
+  }
+}
 // State
 const [ userInfo, setUserInfo ] = useState(null)
-const [ showMenu, setShowMenu ] = useState(false)
 const [ currentArticle, setCurrentArticle ] = useState(null)
 const [ queue, setQueue ] = useState([
     {
@@ -101,7 +107,7 @@ const [ queue, setQueue ] = useState([
           >
           <Stack.Screen name="login">
               { props => <Login 
-                  attemptLogin={setUserInfo}
+                  attemptLogin={attemptLogin}
                   Auth = { Auth }
                   navigation={props.navigation} />}
             </Stack.Screen>

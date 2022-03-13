@@ -1,12 +1,14 @@
 import { View, TextInput, Button, StyleSheet} from 'react-native';
 import React, { useState } from 'react';
 
-function CreateAccount({navigation, Auth, setUserInfo}) {
+function CreateAccount({navigation, Auth}) {
   const [ email, setEmail ] = useState(null)
   const [ pass, setPass ] = useState(null)
   const [ firstName, setFirst ] = useState(null)
   const [ lastName, setLast ] = useState(null)
   const [ confirmPass, setConfirmPass ] = useState(null)
+  const [ attmpted, setAttempted ] = useState(false)
+  const [ confirmCode, setConfirmCode ] = useState(null)
 
   function validEmail(){
     return email && email.includes('@') && email.includes('.')
@@ -28,10 +30,27 @@ function CreateAccount({navigation, Auth, setUserInfo}) {
   async function createAccount(){
     if (verifyUserDetails()){
       try {
-        await Auth.signUp({email, pass, attributes: {firstName, lastName}})
+        await Auth.signUp({
+          username: email, 
+          password: pass, 
+          attributes: {
+            email: email,
+            given_name: firstName, 
+            family_name: lastName
+          }})
+          setAttempted(true)
       }catch (error) {
         alert(error)
       }
+    }
+  }
+  async function confirmSignUp() {
+    try {
+      let conf = await Auth.confirmSignUp(email, confirmCode)
+      alert(conf)
+      navigation.navigate('login')
+    }catch(error) {
+      alert(error)
     }
   }
   const Style = StyleSheet.create({
@@ -50,6 +69,7 @@ function CreateAccount({navigation, Auth, setUserInfo}) {
   })
 
   return (
+    !attmpted? 
     <View>
       <TextInput 
         style={Style.login_element} 
@@ -64,7 +84,8 @@ function CreateAccount({navigation, Auth, setUserInfo}) {
       <TextInput 
         style={Style.login_element} 
         placeholder='user@email.com' 
-        onChangeText={text => setEmail(text)}/>
+        onChangeText={text => setEmail(text)}
+        autoCorrect={false}/>
 
       <TextInput style={Style.login_element} 
         placeholder='password' 
@@ -77,6 +98,14 @@ function CreateAccount({navigation, Auth, setUserInfo}) {
         secureTextEntry={true}/>
 
       <Button onPress={() => {createAccount()}} title='confirm'/>
+    </View> :
+    <View>
+      <TextInput style={Style.login_element} 
+        value=''
+        placeholder='code' 
+        onChangeText={text => setConfirmCode(text)} />
+
+      <Button onPress={() => { confirmSignUp() }} title='confirm'/>
     </View>
   )
 }
