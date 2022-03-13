@@ -101,7 +101,7 @@ function CreateAccount({navigation, Auth}) {
     </View> :
     <View>
       <TextInput style={Style.login_element} 
-        value=''
+        value={confirmCode}
         placeholder='code' 
         onChangeText={text => setConfirmCode(text)} />
 
