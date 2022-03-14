@@ -7,12 +7,12 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
-import { LogBox } from 'react-native';
 import Login from './Login';  
 import CreateAccount from './CreateAccount';
 import Header from './Header'
 import Main from './Main'
 import ArticlePage from './ArticlePage'
+import ResetPass from './ResetPass'
 
 // Amplify AWS stuff
 import { Amplify, Auth } from 'aws-amplify'
@@ -73,11 +73,28 @@ async function search(query){
 async function attemptLogin(user, pass){
   try {
     const attempt = await Auth.signIn(user, pass)
-    setUserInfo([attempt.attributes.email, attempt.attributes.given_name, attempt.attributes.family_name])
+    setUserInfo(attempt.attributes.email)
   }catch(error){
     alert(error)
   }
 }
+async function confirmSignUp(email, confirmCode, navigation, destination) {
+  try {
+    let conf = await Auth.confirmSignUp(email, confirmCode)
+    alert(conf)
+    navigation.navigate(destination)
+  }catch(error) {
+    alert(error)
+  }
+}
+async function changePassword(email, code, password, navigation){
+  try{   
+    await Auth.forgotPasswordSubmit(email, code, password)
+    navigation.navigate('login')
+  }catch(error) {
+    alert(error)
+  }
+} 
 // State
 const [ userInfo, setUserInfo ] = useState(null)
 const [ currentArticle, setCurrentArticle ] = useState(null)
@@ -109,13 +126,15 @@ const [ queue, setQueue ] = useState([
               { props => <Login 
                   attemptLogin={attemptLogin}
                   Auth = { Auth }
-                  navigation={props.navigation} />}
+                  navigation={props.navigation} 
+                  changePassword={changePassword}/>}
             </Stack.Screen>
             <Stack.Screen name="createAccount">
               { props => <CreateAccount
                 setUserInfo={setUserInfo} 
                 Auth = { Auth }
-                navigation={props.navigation} />}
+                navigation={props.navigation} 
+                confirmSignUp={confirmSignUp}/>}
             </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer> 
