@@ -1,14 +1,15 @@
 import { View, TextInput, Button, StyleSheet} from 'react-native';
 import React, { useState } from 'react';
+import Confirm from './Confirm'
+import { Auth } from 'aws-amplify';
 
-function CreateAccount({navigation, Auth}) {
+function CreateAccount({navigation, confirmSignUp}) {
   const [ email, setEmail ] = useState(null)
   const [ pass, setPass ] = useState(null)
   const [ firstName, setFirst ] = useState(null)
   const [ lastName, setLast ] = useState(null)
   const [ confirmPass, setConfirmPass ] = useState(null)
   const [ attmpted, setAttempted ] = useState(false)
-  const [ confirmCode, setConfirmCode ] = useState(null)
 
   function validEmail(){
     return email && email.includes('@') && email.includes('.')
@@ -44,15 +45,7 @@ function CreateAccount({navigation, Auth}) {
       }
     }
   }
-  async function confirmSignUp() {
-    try {
-      let conf = await Auth.confirmSignUp(email, confirmCode)
-      alert(conf)
-      navigation.navigate('login')
-    }catch(error) {
-      alert(error)
-    }
-  }
+
   const Style = StyleSheet.create({
     login_page: {
       justifyContent: 'flex-start',
@@ -99,14 +92,7 @@ function CreateAccount({navigation, Auth}) {
 
       <Button onPress={() => {createAccount()}} title='confirm'/>
     </View> :
-    <View>
-      <TextInput style={Style.login_element} 
-        value={confirmCode}
-        placeholder='code' 
-        onChangeText={text => setConfirmCode(text)} />
-
-      <Button onPress={() => { confirmSignUp() }} title='confirm'/>
-    </View>
+    <Confirm email={email} navigation={navigation} destination='login' confirmSignUp={confirmSignUp}/>
   )
 }
 

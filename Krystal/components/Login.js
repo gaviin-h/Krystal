@@ -1,10 +1,15 @@
 import { View, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
 import {StyleSheet} from 'react-native'
+import { Auth } from 'aws-amplify';
 
-function Login({ navigation, attemptLogin }){
+function Login({ navigation, attemptLogin, setUserInfo }){
   const [ user, setUser ] = useState(null)
   const [ pass, setPass ] = useState(null)
+  function forgot(){
+    setUserInfo(user)
+    Auth.forgotPassword(user).then(navigation.navigate('resetPass')).catch(error => alert(error))
+  }
   const Style = StyleSheet.create({
     login_page: {
       justifyContent: 'flex-start',
@@ -38,6 +43,10 @@ function Login({ navigation, attemptLogin }){
         color='grey' 
         title='create account' 
         onPress={() => navigation.navigate("createAccount")}/>
+      <Button onPress={() => { user? 
+        forgot() : alert('Please enter your email first')}} 
+        title='forgot password?'
+        color='grey'/>
     </View>
   )
 }
