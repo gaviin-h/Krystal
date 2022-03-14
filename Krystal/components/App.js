@@ -87,9 +87,10 @@ async function confirmSignUp(email, confirmCode, navigation, destination) {
     alert(error)
   }
 }
-async function changePassword(email, code, password, navigation){
+async function changePassword( code, password, navigation){
   try{   
-    await Auth.forgotPasswordSubmit(email, code, password)
+    let conf = await Auth.forgotPasswordSubmit(forgotEmail, code, password)
+    alert(conf)
     navigation.navigate('login')
   }catch(error) {
     alert(error)
@@ -98,6 +99,7 @@ async function changePassword(email, code, password, navigation){
 // State
 const [ userInfo, setUserInfo ] = useState(null)
 const [ currentArticle, setCurrentArticle ] = useState(null)
+const [ forgotEmail, setForgotEmail ] = useState(null)
 const [ queue, setQueue ] = useState([
     {
       key: 1,
@@ -127,7 +129,7 @@ const [ queue, setQueue ] = useState([
                   attemptLogin={attemptLogin}
                   Auth = { Auth }
                   navigation={props.navigation} 
-                  changePassword={changePassword}/>}
+                  setUserInfo={setForgotEmail}/>}
             </Stack.Screen>
             <Stack.Screen name="createAccount">
               { props => <CreateAccount
@@ -135,6 +137,12 @@ const [ queue, setQueue ] = useState([
                 Auth = { Auth }
                 navigation={props.navigation} 
                 confirmSignUp={confirmSignUp}/>}
+            </Stack.Screen>
+            <Stack.Screen name='resetPass'>
+              {props => <ResetPass 
+              email = {userInfo} 
+              navigation={props.navigation} 
+              changePassword={changePassword}/>}
             </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer> 

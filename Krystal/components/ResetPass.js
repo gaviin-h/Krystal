@@ -2,12 +2,9 @@ import React, { useState } from 'react'
 import { View, TextInput, Button, StyleSheet} from 'react-native';
 
 function ResetPass({email, changePassword, navigation}){
-  function verifyPass(){
-    return pass && pass===confirmPass
-  }
   const [ confirmPass, setConfirmPass ] = useState(null)
   const [ pass, setPass ] = useState(null)
-  const [ confirmCode, setConfirmCode ] = useState('')
+  const [ confirmCode, setConfirmCode ] = useState(null)
   const Style = StyleSheet.create({
     login_element: {
       height: 40,
@@ -18,8 +15,12 @@ function ResetPass({email, changePassword, navigation}){
       borderRadius: 10,
     },
   })
+  function verifyPass(){
+    return pass && pass===confirmPass
+  }
   return (
     <View>
+      
     <TextInput style={Style.login_element} 
       value={confirmCode}
       placeholder='code' 
@@ -35,7 +36,7 @@ function ResetPass({email, changePassword, navigation}){
       onChangeText={text => setConfirmPass(text)} 
       secureTextEntry={true}/>
 
-    <Button onPress={() => { verifyPass()? changePassword(email, confirmCode, pass, navigation).catch(error => alert(error)) : alert('check password')}} title='confirm'/>
+    <Button onPress={() => { verifyPass()? changePassword( confirmCode, pass, navigation).catch(error => alert(error)) : alert('check password')}} title='confirm'/>
     </View>
   )
 }
