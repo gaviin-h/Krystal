@@ -3,12 +3,22 @@ import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
-import { LogBox } from 'react-native';
 import Login from './Login';  
 import CreateAccount from './CreateAccount';
 import Header from './Header'
 import Main from './Main'
 import ArticlePage from './ArticlePage'
+import ResetPass from './ResetPass'
+
+// Amplify AWS stuff
+import { Amplify, Auth } from 'aws-amplify'
+import awsconfig from '../src/aws-exports'
+Amplify.configure({
+  ...awsconfig,
+  Analytics: {
+    disabled: true,
+  },
+});
 
 // LogBox.ignoreAllLogs()
 const Stack = createNativeStackNavigator();
@@ -56,11 +66,36 @@ async function search(query){
       })
     })
 }
-
+async function attemptLogin(user, pass){
+  try {
+    const attempt = await Auth.signIn(user, pass)
+    setUserInfo(attempt.attributes.email)
+  }catch(error){
+    alert(error)
+  }
+}
+async function confirmSignUp(email, confirmCode, navigation, destination) {
+  try {
+    let conf = await Auth.confirmSignUp(email, confirmCode)
+    alert(conf)
+    navigation.navigate(destination)
+  }catch(error) {
+    alert(error)
+  }
+}
+async function changePassword( code, password, navigation){
+  try{   
+    let conf = await Auth.forgotPasswordSubmit(forgotEmail, code, password)
+    alert(conf)
+    navigation.navigate('login')
+  }catch(error) {
+    alert(error)
+  }
+} 
 // State
 const [ userInfo, setUserInfo ] = useState(null)
-const [ showMenu, setShowMenu ] = useState(false)
 const [ currentArticle, setCurrentArticle ] = useState(null)
+const [ forgotEmail, setForgotEmail ] = useState(null)
 const [ queue, setQueue ] = useState([
     {
       key: 1,
@@ -87,13 +122,23 @@ const [ queue, setQueue ] = useState([
           >
           <Stack.Screen name="login">
               { props => <Login 
-                  attemptLogin={setUserInfo}
-                  navigation={props.navigation} />}
+                  attemptLogin={attemptLogin}
+                  Auth = { Auth }
+                  navigation={props.navigation} 
+                  setUserInfo={setForgotEmail}/>}
             </Stack.Screen>
             <Stack.Screen name="createAccount">
               { props => <CreateAccount
-                createAccount={setUserInfo} 
-                navigation={props.navigation} />}
+                setUserInfo={setUserInfo} 
+                Auth = { Auth }
+                navigation={props.navigation} 
+                confirmSignUp={confirmSignUp}/>}
+            </Stack.Screen>
+            <Stack.Screen name='resetPass'>
+              {props => <ResetPass 
+              email = {userInfo} 
+              navigation={props.navigation} 
+              changePassword={changePassword}/>}
             </Stack.Screen>
         </Stack.Navigator>
       </NavigationContainer> 

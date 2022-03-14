@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-krystal-dev-213131-authRole",
+      "UnauthRoleArn": "arn:aws:iam::870689197908:role/amplify-krystal-dev-213131-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::870689197908:role/amplify-krystal-dev-213131-authRole",
+      "Region": "us-west-2",
+      "DeploymentBucketName": "amplify-krystal-dev-213131-deployment",
+      "UnauthRoleName": "amplify-krystal-dev-213131-unauthRole",
+      "StackName": "amplify-krystal-dev-213131",
+      "StackId": "arn:aws:cloudformation:us-west-2:870689197908:stack/amplify-krystal-dev-213131/af14adc0-a1c5-11ec-8fc5-0a7e1f31bb99",
+      "AmplifyAppId": "d2ah4m6zw1ivyk"
+    },
+    "categories": {
+      "auth": {
+        "krystal3c9b66f0": {}
+      }
+    }
+  }
+}
