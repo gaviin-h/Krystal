@@ -13,6 +13,7 @@ import Header from './Header'
 import Main from './Main'
 import ArticlePage from './ArticlePage'
 import ResetPass from './ResetPass'
+import ShareContainer from './ShareContainer';
 
 // Amplify AWS stuff
 import { Amplify, Auth } from 'aws-amplify'
@@ -42,7 +43,9 @@ const HomeDrawer = ({drawerNav, queue, search, setCurrentArticle, currentArticle
         search={search}
         setCurrentArticle={setCurrentArticle}/>}
       </Stack.Screen>
-      <Stack.Screen name='articlePage'>
+      <Stack.Screen name='articlePage'
+      options={ ()  => ({headerRight: () => (<ShareContainer/>)})}>
+    
         { props => <ArticlePage 
         navigation={props.navigation}
         article={currentArticle}/>}
