@@ -2,10 +2,11 @@ import { Image, StyleSheet, View } from 'react-native'
 import logo from '../li.png'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome'
-function Header({ setShowMenu }) {
+
+function Header({ navigation }) {
   const Style = StyleSheet.create({
     image: {
-      marginTop: 30,
+      marginTop: -20,
       height: 50,
       width: 50,
     },
@@ -23,8 +24,8 @@ function Header({ setShowMenu }) {
   })
   return (
     <View style={Style.view}>
-      <Icon style={Style.barsIcon} name='bars' size={30} onPress={setShowMenu(true)}/>
-      <Image //need to convert to an icon when we make one
+      <Icon style={Style.barsIcon} name='bars' size={30} onPress={() => navigation.toggleDrawer() }/>
+      <Image 
         style={Style.image}
         source={logo}
       />

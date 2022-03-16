@@ -17,6 +17,7 @@ async function make_request(search_term){
     var req=new Request(url)
     fetch(req).then(function(response) {
         response.json().then((data)=>{
+            console.log(data)
             // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
             update_page(data.articles[0].title, data.articles[0].description)
         })
@@ -38,13 +39,20 @@ async function tester(search){
 }
 var resp
 async function make_filter(filter){
-    var url='https://littlesis.org/api/entities/search?q='+filter
-    var req=new Request(url)
+    // var url='https://littlesis.org/api/entities/search?q='+filter
+    // var req=new Request(url)
+    // fetch(req).then(function(response){
+    //     response.json().then((r)=>{
+    //         var name=r.data[0].attributes.name
+    //         var desc=r.data[0].attributes.blurb
+    //         update_page(name, desc)
+    //     })
+    // })
+    var url='https://localhost:8080/filter'
+    var req=new Request(url, {method: 'POST', body: '{filter: '+filter+'}'})
     fetch(req).then(function(response){
         response.json().then((r)=>{
-            var name=r.data[0].attributes.name
-            var desc=r.data[0].attributes.blurb
-            update_page(name, desc)
+            resp=r
         })
     })
 }
