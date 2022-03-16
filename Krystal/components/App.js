@@ -14,6 +14,7 @@
  import ArticlePage from './ArticlePage'
  import ResetPass from './ResetPass'
  import AccountSettings from './AccountSettings'
+ import ShareContainer from './ShareContainer'
 
  // Amplify AWS stuff
  import { Amplify, Auth } from 'aws-amplify'
@@ -43,7 +44,8 @@
          search={search}
          setCurrentArticle={setCurrentArticle}/>}
        </Stack.Screen>
-       <Stack.Screen name='articlePage'>
+       <Stack.Screen name='articlePage' 
+        options={() => ({headerRight: () => (<ShareContainer/>)})}>
          { props => <ArticlePage 
          navigation={props.navigation}
          article={currentArticle}/>}
@@ -172,7 +174,7 @@
              {props => <AccountSettings 
              navigation={props.navigation}/>}
            </Drawer.Screen>
-         </Drawer.Navigator>
+          </Drawer.Navigator>
        </NavigationContainer>
    );
  };
