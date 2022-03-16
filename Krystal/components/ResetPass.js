@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, TextInput, Button, StyleSheet} from 'react-native';
 
-function ResetPass({email, changePassword, navigation}){
+function ResetPass({ changePassword, navigation}){
   const [ confirmPass, setConfirmPass ] = useState(null)
   const [ pass, setPass ] = useState(null)
   const [ confirmCode, setConfirmCode ] = useState(null)
