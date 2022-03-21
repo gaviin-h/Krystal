@@ -13,7 +13,8 @@
  import Main from './Main'
  import ArticlePage from './ArticlePage'
  import ResetPass from './ResetPass'
- 
+ import AccountSettings from './AccountSettings'
+
  // Amplify AWS stuff
  import { Amplify, Auth } from 'aws-amplify'
  import awsconfig from '../src/aws-exports'
@@ -166,6 +167,10 @@
              search={search}
              setCurrentArticle={setCurrentArticle}
              currentArticle={currentArticle}/>}
+           </Drawer.Screen>
+           <Drawer.Screen name="accountSettings">
+             {props => <AccountSettings 
+             navigation={props.navigation}/>}
            </Drawer.Screen>
          </Drawer.Navigator>
        </NavigationContainer>
