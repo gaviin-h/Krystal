@@ -75,10 +75,25 @@
  }
  async function attemptLogin(user, pass){
    try {
-     const attempt = await Auth.signIn(user, pass)
-     setUserInfo(attempt.attributes.email)
+    const attempt = await Auth.signIn(user, pass)
+    setUserInfo(attempt.attributes.email) 
+    const data={term: "russia"}
+    let articles=await fetch("https://6omto2ivbl.execute-api.us-west-2.amazonaws.com/dev", {
+        method: "POST", 
+        type : "object",
+        required : [ "request" ],
+        properties : {
+          request : {
+            type : "string"
+          }
+        },
+        title : "Request Schema",
+        body : JSON.stringify(data)
+    })
+    console.log(articles)
+    // setQueue()
    }catch(error){
-     alert(error)
+    alert(error)
    }
  }
  async function confirmSignUp(email, confirmCode, navigation, destination) {
@@ -104,21 +119,21 @@
  const [ currentArticle, setCurrentArticle ] = useState(null)
  const [ forgotEmail, setForgotEmail ] = useState(null)
  const [ queue, setQueue ] = useState([
-     {
-       key: 1,
-       title: 'Stone Burns',
-       author: 'Gavin Newsom',
-       description: 'The end times are upon us',
-       url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html'
-     },
-     {
-       key: 2,
-       title: 'Butterfly Away',
-       author: 'Miley Cyrus',
-       description: 'Idk I dont listen to Miley',
-       url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic'
-     }
- ])
+  {
+    key: 1,
+    title: 'Stone Burns',
+    author: 'Gavin Newsom',
+    description: 'The end times are upon us',
+    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html'
+  },
+  {
+    key: 2,
+    title: 'Butterfly Away',
+    author: 'Miley Cyrus',
+    description: 'Idk I dont listen to Miley',
+    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic'
+  }
+])
  
  // RETURN
    return (

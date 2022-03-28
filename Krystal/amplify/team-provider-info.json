@@ -9,11 +9,18 @@
       "UnauthRoleName": "amplify-krystal-dev-213131-unauthRole",
       "StackName": "amplify-krystal-dev-213131",
       "StackId": "arn:aws:cloudformation:us-west-2:870689197908:stack/amplify-krystal-dev-213131/af14adc0-a1c5-11ec-8fc5-0a7e1f31bb99",
-      "AmplifyAppId": "d2ah4m6zw1ivyk"
+      "AmplifyAppId": "d2ah4m6zw1ivyk",
+      "APIGatewayAuthURL": "https://s3.amazonaws.com/amplify-krystal-dev-213131-deployment/amplify-cfn-templates/api/APIGatewayAuthStack.json"
     },
     "categories": {
       "auth": {
         "krystal3c9b66f0": {}
+      },
+      "function": {
+        "SuggestEngine": {
+          "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
+          "s3Key": "amplify-builds/SuggestEngine-4e6c556b794433305775-build.zip"
+        }
       }
     }
   }
