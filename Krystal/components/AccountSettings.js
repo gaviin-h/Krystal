@@ -1,10 +1,6 @@
 import { View, TextInput, Button, Text } from 'react-native';
 import React, { useState } from 'react';
 import {StyleSheet} from 'react-native'
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
-import Header from './Header'
 
 function AccountSettings(navigation){
     const [ first, setFirstName ] = useState(null)

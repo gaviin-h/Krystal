@@ -14,7 +14,6 @@
  import ArticlePage from './ArticlePage'
  import ResetPass from './ResetPass'
  import AccountSettings from './AccountSettings'
- import ContentSettings from './ContentSettings';
  import ShareContainer from './ShareContainer'
 
  // Amplify AWS stuff
@@ -160,10 +159,10 @@
            return (
              <DrawerContentScrollView {...props}>
                <DrawerItemList {...props} />
-               <DrawerItem label="Logout" onPress={() => setUserInfo(null)}/>
+               <DrawerItem label="logout" onPress={() => setUserInfo(null)}/>
              </DrawerContentScrollView>
            )}}>
-           <Drawer.Screen name='Home'>
+           <Drawer.Screen name='home'>
              { props => <HomeDrawer 
              queue={queue}
              drawerNav={props.navigation}
@@ -171,12 +170,8 @@
              setCurrentArticle={setCurrentArticle}
              currentArticle={currentArticle}/>}
            </Drawer.Screen>
-           <Drawer.Screen name="Account Settings">
+           <Drawer.Screen name="accountSettings">
              {props => <AccountSettings 
-             navigation={props.navigation}/>}
-           </Drawer.Screen>
-           <Drawer.Screen name="Content Settings">
-             {props => <ContentSettings 
              navigation={props.navigation}/>}
            </Drawer.Screen>
           </Drawer.Navigator>
