@@ -6,7 +6,7 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 function Header({ navigation }) {
   const Style = StyleSheet.create({
     image: {
-      marginTop: -20,
+      marginTop: 5,
       height: 50,
       width: 50,
     },

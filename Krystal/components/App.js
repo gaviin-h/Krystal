@@ -46,7 +46,7 @@
          setCurrentArticle={setCurrentArticle}/>}
        </Stack.Screen>
        <Stack.Screen name='articlePage' 
-        options={() => ({headerRight: () => (<ShareContainer/>)})}>
+        options={() => ({headerRight: () => (<ShareContainer articleUrl={currentArticle.url}/>)})}>
          { props => <ArticlePage 
          navigation={props.navigation}
          article={currentArticle}/>}
@@ -128,7 +128,7 @@
          <Stack.Navigator
            initialRouteName="login"
            >
-           <Stack.Screen name="login">
+           <Stack.Screen name="Login">
                { props => <Login 
                    attemptLogin={attemptLogin}
                    Auth = { Auth }
@@ -171,11 +171,20 @@
              setCurrentArticle={setCurrentArticle}
              currentArticle={currentArticle}/>}
            </Drawer.Screen>
-           <Drawer.Screen name="Account Settings">
+           <Drawer.Screen name="Account Settings"
+            options={ (props) => ({
+              headerShown: true,
+              // headerTitle: () => <Header
+              //  navigation={props.navigation}/> 
+            })}>
              {props => <AccountSettings 
              navigation={props.navigation}/>}
            </Drawer.Screen>
-           <Drawer.Screen name="Content Settings">
+           <Drawer.Screen name="Content Settings"options={ (props) => ({
+              headerShown: true,
+             // headerTitle: () => <Header
+               //navigation={props.navigation}/> 
+            })}>
              {props => <ContentSettings 
              navigation={props.navigation}/>}
            </Drawer.Screen>

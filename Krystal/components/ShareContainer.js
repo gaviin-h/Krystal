@@ -3,13 +3,13 @@ import React from 'react';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import  Share  from 'react-native-share';
 
-const ShareContainer = () => { // this represents the App main function for our app
+const ShareContainer = (articleUrl) => { // this represents the App main function for our app
 
     const shareButton = async () => {
+        
         const shareOptions = {
-            message: 'Share this news article',
-            /* right here I believe I need to put the URL
-            so that the user can share the news article
+             message: String(articleUrl['articleUrl']),
+            /* shares article url
             */
         }
         try {

@@ -1,7 +1,8 @@
 import { View, TextInput, Button } from 'react-native';
 import React, { useState } from 'react';
-import {StyleSheet} from 'react-native'
+import {Image, StyleSheet} from 'react-native'
 import { Auth } from 'aws-amplify';
+import logo from '../li.png'
 
 function Login({ navigation, attemptLogin, setUserInfo }){
   const [ user, setUser ] = useState(null)
@@ -11,11 +12,21 @@ function Login({ navigation, attemptLogin, setUserInfo }){
     Auth.forgotPassword(user).then(navigation.navigate('resetPass')).catch(error => alert(error))
   }
   const Style = StyleSheet.create({
+    
+    image: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      marginTop: 20,
+      height: 200,
+      width: 200,
+    },
     login_page: {
       justifyContent: 'flex-start',
+      alignItems: 'center',
       MarginBottom: '50%',
     },
     login_element: {
+      minWidth: 300,
       height: 40,
       margin: 12,
       borderWidth: 1,
@@ -23,9 +34,18 @@ function Login({ navigation, attemptLogin, setUserInfo }){
       borderColor: 'white',
       borderRadius: 10,
     },
+    button: {
+      MarginBottom: 20,
+      padding: 20,
+    },
   })
   return(
+    
     <View style={Style.login_page}>
+      <Image 
+        style={Style.image}
+        source={logo}
+      />
       <TextInput 
         style={Style.login_element} 
         placeholder='user@email.com' 
@@ -36,14 +56,14 @@ function Login({ navigation, attemptLogin, setUserInfo }){
         onChangeText={text => setPass(text)} 
         secureTextEntry={true}/>
 
-      <Button onPress={() => {
+      <Button style= {Style.button} onPress={() => {
         attemptLogin(user, pass)}} 
         title='login'/>
-      <Button 
+      <Button style= {Style.button}
         color='grey' 
         title='create account' 
         onPress={() => navigation.navigate("createAccount")}/>
-      <Button onPress={() => { user? 
+      <Button style= {Style.button} onPress={() => { user? 
         forgot() : alert('Please enter your email first')}} 
         title='forgot password?'
         color='grey'/>

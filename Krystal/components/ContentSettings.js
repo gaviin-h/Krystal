@@ -21,34 +21,48 @@ function ContentSettings(navigation){
             borderRadius: 10,
           },
           title: {
-              height: 80,
+            fontSize: 30,
+              height: 40,
               alignItems: 'center',
 
-          }
+          },
+          headers:{
+            //margin: 20,
+            //padding: 10,
+              height: 40,
+              fontSize: 20,
+          },
           
         })
     return(
        <View //style={Style.TextInput}>
        >
-           <Text style={Style.title}>
-             {"    Content Settings"}
-             </Text>
-           <Text style={Style.title}>
+          
+           <Text style={Style.headers}>
              {"    Explore Filters"}
              </Text>
           <TextInput 
             style={Style.TextInput} 
             placeholder='Search' 
             onChangeText={text => searchAvailable(text)}/>
+            <Button 
+            color='#006b76' 
+            title='Search' 
+            />
+            
         
             
-            <Text style={Style.title}>
+            <Text style={Style.headers}>
              {"     Current Filters"}
              </Text>
             <TextInput style={Style.TextInput} 
             placeholder='Search' 
             onChangeText={text => searchCurrent(text)} 
             secureTextEntry={true}/>
+            <Button 
+            color='#006b76' 
+            title='Search' 
+            />
     
           
           
