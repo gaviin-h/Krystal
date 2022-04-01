@@ -14,6 +14,7 @@
  import ArticlePage from './ArticlePage'
  import ResetPass from './ResetPass'
  import AccountSettings from './AccountSettings'
+ import ContentSettings from './ContentSettings';
  import ShareContainer from './ShareContainer'
 
  // Amplify AWS stuff
@@ -45,7 +46,7 @@
          setCurrentArticle={setCurrentArticle}/>}
        </Stack.Screen>
        <Stack.Screen name='articlePage' 
-        options={() => ({headerRight: () => (<ShareContainer/>)})}>
+        options={() => ({headerRight: () => (<ShareContainer articleUrl={currentArticle.url}/>)})}>
          { props => <ArticlePage 
          navigation={props.navigation}
          article={currentArticle}/>}
@@ -142,7 +143,7 @@
          <Stack.Navigator
            initialRouteName="login"
            >
-           <Stack.Screen name="login">
+           <Stack.Screen name="Login">
                { props => <Login 
                    attemptLogin={attemptLogin}
                    Auth = { Auth }
@@ -174,10 +175,10 @@
            return (
              <DrawerContentScrollView {...props}>
                <DrawerItemList {...props} />
-               <DrawerItem label="logout" onPress={() => setUserInfo(null)}/>
+               <DrawerItem label="Logout" onPress={() => setUserInfo(null)}/>
              </DrawerContentScrollView>
            )}}>
-           <Drawer.Screen name='home'>
+           <Drawer.Screen name='Home'>
              { props => <HomeDrawer 
              queue={queue}
              drawerNav={props.navigation}
@@ -185,8 +186,21 @@
              setCurrentArticle={setCurrentArticle}
              currentArticle={currentArticle}/>}
            </Drawer.Screen>
-           <Drawer.Screen name="accountSettings">
+           <Drawer.Screen name="Account Settings"
+            options={ (props) => ({
+              headerShown: true,
+              // headerTitle: () => <Header
+              //  navigation={props.navigation}/> 
+            })}>
              {props => <AccountSettings 
+             navigation={props.navigation}/>}
+           </Drawer.Screen>
+           <Drawer.Screen name="Content Settings"options={ (props) => ({
+              headerShown: true,
+             // headerTitle: () => <Header
+               //navigation={props.navigation}/> 
+            })}>
+             {props => <ContentSettings 
              navigation={props.navigation}/>}
            </Drawer.Screen>
           </Drawer.Navigator>
