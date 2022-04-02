@@ -19,7 +19,7 @@
       "function": {
         "SuggestEngine": {
           "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
-          "s3Key": "amplify-builds/SuggestEngine-4e6c556b794433305775-build.zip"
+          "s3Key": "amplify-builds/SuggestEngine-64706a63572b55506345-build.zip"
         }
       }
     }

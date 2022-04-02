@@ -67,7 +67,7 @@
      '&from=' + search_date +'&sortBy=popularity&' +'apiKey='+ApiKey
  
    var req=new Request(url)
-   fetch(req).then(function(response) {
+   fetch(req).then((response) => {
      response.json().then((data)=>{
          // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
          setQueue(data.articles.slice(0,20))
@@ -77,22 +77,13 @@
  async function attemptLogin(user, pass){
    try {
     const attempt = await Auth.signIn(user, pass)
-    setUserInfo(attempt.attributes.email) 
-    const data={term: "russia"}
-    let articles=await fetch("https://6omto2ivbl.execute-api.us-west-2.amazonaws.com/dev", {
-        method: "POST", 
-        type : "object",
-        required : [ "request" ],
-        properties : {
-          request : {
-            type : "string"
-          }
-        },
-        title : "Request Schema",
-        body : JSON.stringify(data)
+    setUserInfo(attempt.signInUserSession)
+    // const data={term: "russia"}
+    fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country=russia").then((response) => {
+      response.json().then((data) => {
+        setQueue(data.articles.content.articles)
+      })
     })
-    console.log(articles)
-    // setQueue()
    }catch(error){
     alert(error)
    }
@@ -106,7 +97,7 @@
      alert(error)
    }
  }
- async function changePassword( code, password, navigation){
+  async function changePassword( code, password, navigation){
    try{   
      let conf = await Auth.forgotPasswordSubmit(forgotEmail, code, password)
      alert(conf)
