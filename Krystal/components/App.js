@@ -67,7 +67,7 @@
      '&from=' + search_date +'&sortBy=popularity&' +'apiKey='+ApiKey
  
    var req=new Request(url)
-   fetch(req).then(function(response) {
+   fetch(req).then((response) => {
      response.json().then((data)=>{
          // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
          setQueue(data.articles.slice(0,20))
@@ -76,10 +76,16 @@
  }
  async function attemptLogin(user, pass){
    try {
-     const attempt = await Auth.signIn(user, pass)
-     setUserInfo(attempt.attributes.email)
+    const attempt = await Auth.signIn(user, pass)
+    setUserInfo(attempt.signInUserSession)
+    // const data={term: "russia"}
+    fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country=russia").then((response) => {
+      response.json().then((data) => {
+        setQueue(data.articles.content.articles)
+      })
+    })
    }catch(error){
-     alert(error)
+    alert(error)
    }
  }
  async function confirmSignUp(email, confirmCode, navigation, destination) {
@@ -91,7 +97,7 @@
      alert(error)
    }
  }
- async function changePassword( code, password, navigation){
+  async function changePassword( code, password, navigation){
    try{   
      let conf = await Auth.forgotPasswordSubmit(forgotEmail, code, password)
      alert(conf)
@@ -105,21 +111,21 @@
  const [ currentArticle, setCurrentArticle ] = useState(null)
  const [ forgotEmail, setForgotEmail ] = useState(null)
  const [ queue, setQueue ] = useState([
-     {
-       key: 1,
-       title: 'Stone Burns',
-       author: 'Gavin Newsom',
-       description: 'The end times are upon us',
-       url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html'
-     },
-     {
-       key: 2,
-       title: 'Butterfly Away',
-       author: 'Miley Cyrus',
-       description: 'Idk I dont listen to Miley',
-       url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic'
-     }
- ])
+  {
+    key: 1,
+    title: 'Stone Burns',
+    author: 'Gavin Newsom',
+    description: 'The end times are upon us',
+    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html'
+  },
+  {
+    key: 2,
+    title: 'Butterfly Away',
+    author: 'Miley Cyrus',
+    description: 'Idk I dont listen to Miley',
+    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic'
+  }
+])
  
  // RETURN
    return (
