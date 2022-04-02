@@ -27,7 +27,7 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-    <true/>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>localhost</key>
@@ -73,7 +73,7 @@
 		<string>Zocial.ttf</string>
 	</array>
 	<key>LSApplicationQueriesSchemes</key>
-	<array> 
+	<array>
 		<string>http</string>
 		<string>https</string>
 		<string>about</string>
