@@ -70,14 +70,20 @@
    fetch(req).then((response) => {
      response.json().then((data)=>{
          // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
-         setQueue(data.articles.slice(0,20))
-       })
-     })
+        setQueue(data.articles.slice(0,20))
+      })
+    })
+    let user = await Auth.currentAuthenticatedUser();
+    let result = await Auth.updateUserAttributes(user, {
+        'custom:private_keys': query+',',
+    });
+    console.log(result)
  }
  async function attemptLogin(user, pass){
    try {
-    const attempt = await Auth.signIn(user, pass)
-    setUserInfo(attempt.signInUserSession)
+    Auth.signIn(user, pass).then( (attempt) =>{
+      setUserInfo(attempt.attributes)
+    })
     // const data={term: "russia"}
     fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country=russia").then((response) => {
       response.json().then((data) => {
