@@ -11,8 +11,8 @@ function Login({ navigation, attemptLogin, setUserInfo }){
     setUserInfo(user)
     Auth.forgotPassword(user).then(navigation.navigate('resetPass')).catch(error => alert(error))
   }
+  
   const Style = StyleSheet.create({
-    
     image: {
       justifyContent: 'center',
       alignItems: 'center',
@@ -24,6 +24,18 @@ function Login({ navigation, attemptLogin, setUserInfo }){
       justifyContent: 'flex-start',
       alignItems: 'center',
       MarginBottom: '50%',
+      SubmitButtonStyle: {
+   
+        marginTop:10,
+        paddingTop:15,
+        paddingBottom:15,
+        marginLeft:30,
+        marginRight:30,
+        backgroundColor:'#00BCD4',
+        borderRadius:10,
+        borderWidth: 1,
+        borderColor: '#fff'
+      },
     },
     login_element: {
       minWidth: 300,
@@ -38,6 +50,13 @@ function Login({ navigation, attemptLogin, setUserInfo }){
       MarginBottom: 20,
       padding: 20,
     },
+    MainContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      backgroundColor: '#F5FCFF',
+    },
+   
+    
   })
   return(
     
@@ -56,7 +75,7 @@ function Login({ navigation, attemptLogin, setUserInfo }){
         onChangeText={text => setPass(text)} 
         secureTextEntry={true}/>
 
-      <Button style= {Style.button} onPress={() => {
+      <Button style= {Style.SubmitButtonStyle} onPress={() => {
         attemptLogin(user, pass)}} 
         title='login'/>
       <Button style= {Style.button}
