@@ -81,9 +81,9 @@
  }
  async function attemptLogin(user, pass){
    try {
-    Auth.signIn(user, pass).then( (attempt) =>{
-      setUserInfo(attempt.attributes)
-    })
+    let attempt= await Auth.signIn(user, pass)
+    setUserInfo(attempt.attributes)
+    
     // const data={term: "russia"}
     fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country=russia").then((response) => {
       response.json().then((data) => {
