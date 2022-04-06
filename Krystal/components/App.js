@@ -140,7 +140,7 @@
          <Stack.Navigator
            initialRouteName="login"
            >
-           <Stack.Screen name="Login">
+           <Stack.Screen name="login">
                { props => <Login 
                    attemptLogin={attemptLogin}
                    Auth = { Auth }
