@@ -23,7 +23,7 @@
         },
         "FilterSuggest": {
           "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
-          "s3Key": "amplify-builds/FilterSuggest-3457523832436f7a5947-build.zip"
+          "s3Key": "amplify-builds/FilterSuggest-725677497a6b70334d38-build.zip"
         },
         "krystalLayerOne": {
           "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
