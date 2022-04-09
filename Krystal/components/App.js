@@ -74,8 +74,9 @@
       })
     })
     let user = await Auth.currentAuthenticatedUser();
+    console.log(user.attributes['custom:private_keys'])
     let result = await Auth.updateUserAttributes(user, {
-        'custom:private_keys': query+',',
+        'custom:private_keys': query+','+user.attributes['custom:private_keys'].slice(0,256-length(query)),
     });
     console.log(result)
  }
@@ -83,8 +84,7 @@
    try {
     let attempt= await Auth.signIn(user, pass)
     setUserInfo(attempt.attributes)
-    
-    // const data={term: "russia"}
+
     fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country=russia").then((response) => {
       response.json().then((data) => {
         setQueue(data.articles.content.articles)
@@ -140,7 +140,7 @@
          <Stack.Navigator
            initialRouteName="login"
            >
-           <Stack.Screen name="Login">
+           <Stack.Screen name="login">
                { props => <Login 
                    attemptLogin={attemptLogin}
                    Auth = { Auth }
