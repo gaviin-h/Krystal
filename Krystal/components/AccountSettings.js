@@ -6,7 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
 import Header from './Header'
 
-function AccountSettings(navigation){
+function AccountSettings(navigation, userInfo){
     const [ first, setFirstName ] = useState(null)
     const [ last, setLastName ] = useState(null)
     const [ email, setEmailAddress ] = useState(null)
@@ -23,11 +23,13 @@ function AccountSettings(navigation){
             borderRadius: 10,
           },
         })
+  
     return(
        <View //style={Style.TextInput}>
        >
            <Text style={Style.title}>
-             {"     First Name"}
+          
+             {"    First Name"}
              </Text>
           <TextInput 
             style={Style.TextInput} 
