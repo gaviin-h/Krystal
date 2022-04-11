@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { View, StyleSheet} from 'react-native';
 import FilterBubble from './FilterBubble'
 
-export default function FilterContainer({suggestResults}){
+export default function FilterContainer({ suggestResults}){
   const [ currentFilters, setCurrentFilters ] = useState(null)
   function addTerm(term){
     setCurrentFilters(currentFilters+[term])
@@ -21,17 +21,17 @@ export default function FilterContainer({suggestResults}){
   })
   return (
     <View style={Style.container}>
-      {suggestResults.map((term) => 
+      {currentFilters? currentFilters.map((term) => 
       ( <FilterBubble 
           term={term}
           addTerm={addTerm}
-        /> ))}
-      {suggestResults.map((term) => 
+          // deleteTerm={deleteTerm}
+        /> )) : null}
+      {suggestResults? suggestResults.map((term) => 
       ( <FilterBubble 
           term={term}
           addTerm={addTerm}
-          deleteTerm={deleteTerm}
-        /> ))}
+        /> )) : null}
     </View>
   )
 }
