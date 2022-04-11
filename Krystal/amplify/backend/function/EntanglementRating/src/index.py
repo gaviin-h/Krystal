@@ -31,16 +31,28 @@ def handler(event, context=None):
 		try:
 			url=f'https://littlesis.org/api/entities/{old_node.id}/relationships'
 			r=requests.get(url).json()
-			for c,child in enumerate(r['data']):
-				if depth<DEPTH and c<10 and child['attributes']['entity1_id'] not in explored: ## and check if explored
-					old_node.add_child(child['attributes']['entity1_id'])
-					build_tree(old_node.children[-1], depth+1)
+			for child in r['data'][:10]:
+				new_id=child['attributes']['entity1_id'] if child['attributes']['entity1_id'] != old_node.id else child['attributes']['entity2_id']
+				if new_id not in explored: ## and check if explored
+					old_node.add_child(new_id)
+					if depth<DEPTH:
+						build_tree(old_node.children[-1], depth+1)## here?
 
 			return old_node
 		except Exception as e:
 			# maybe try to implement logging here
 			print(e)
 
+	def build_list(filter_id):
+		related=[filter_id]
+		url=f'https://littlesis.org/api/entities/{filter_id}/relationships'
+		r=requests.get(url).json()
+		for child in r['data']:
+			new_id=child['attributes']['entity1_id'] if child['attributes']['entity1_id'] != filter_id else child['attributes']['entity2_id']
+			if new_id not in related:
+				related.append(new_id)
+
+		return related
 	# Search the tree for any hits
 	def dfs(root, search_ids):
 		if root.has_children:
@@ -52,7 +64,7 @@ def handler(event, context=None):
   #################
 	## MAIN METHOD ## 
 	#################
-	root=build_tree(node(int(event['filter_id']), None))
+	root=build_list(int(event['filter_id']))
 	entities={}
 	# go through current queue and resolve entities in the form {id: name}
 	for i in event['articles']:
@@ -64,17 +76,21 @@ def handler(event, context=None):
 		except Exception as e:
 			# log?
 			print(e)
-	print(root.id)
-	print(root.list_children())
-	print('\n')
-	for child in root.children:
-		print(child.id)
-		print(child.list_children())
-		print('\n')
+	connections={}
+	for i in entities:
+		if i in root:
+			connections[entities[i]]=root[0]
+	# print(root.id)
+	# print(root.list_children())
+	# print('\n')
+	# for child in root.children:
+	# 	print(child.id)
+	# 	print(child.list_children())
+	# 	print('\n')
 	# path=dfs(root, entities)
 
 	return {
-    'content': path
+    'content': connections
   }
 
 event=json.load(open('amplify/backend/function/EntanglementRating/src/event.json', 'r'))
