@@ -1,15 +1,9 @@
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, Text } from 'react-native';
+import React from 'react'
 
-export default function FilterContainer({term, addTerm}){
-  const Style = StyleSheet.create({
-    bubble: {
-      backgroundColor:'blue',
-      height: 20,
-      width: 40,
-      borderRadius: 10
-    }
-  })
+export default function FilterContainer({term, functionality, style}){
+
   return (
-    <Pressable onPress={() => addTerm(term)} style={Style.bubble}><Text> {term}</Text></Pressable>
+    <Pressable onPress={() => functionality(term)} style={style}><Text> {term}</Text></Pressable>
   )
 }

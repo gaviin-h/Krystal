@@ -16,6 +16,7 @@
  import AccountSettings from './AccountSettings'
  import ContentSettings from './ContentSettings';
  import ShareContainer from './ShareContainer'
+ import SearchFilter from './Filter';
 
  // Amplify AWS stuff
  import { Amplify, Auth } from 'aws-amplify'
