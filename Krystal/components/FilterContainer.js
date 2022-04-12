@@ -23,13 +23,13 @@ export default function FilterContainer({ suggestResults}){
     <View style={Style.container}>
       {currentFilters? currentFilters.map((term) => 
       ( <FilterBubble 
-          term={term}
+          term={Object.keys(term)}
           addTerm={addTerm}
           // deleteTerm={deleteTerm}
         /> )) : null}
       {suggestResults? suggestResults.map((term) => 
       ( <FilterBubble 
-          term={term}
+          term={Object.keys(term)}
           addTerm={addTerm}
         /> )) : null}
     </View>

@@ -21,8 +21,7 @@ import FilterContainer from './FilterContainer'
               try{ 
                 const url='https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/filtersuggest?query='+text
                 fetch(url).then( response=>response.json().then( r=>{
-                  console.log(Object.keys(r.content))
-                  // setSuggestResults(r.content)
+                  setSuggestResults(r.content)
                 }))
               }catch (error){
                 alert(error)
