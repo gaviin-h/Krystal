@@ -7,29 +7,30 @@ import FilterContainer from './FilterContainer'
   function Filter({}) {
     const [ text, setText ] = useState()
     const [ suggestResults, setSuggestResults] = useState(null)
-    var TO
+
+    async function filterSet(){
+      try{ 
+        const url='https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/filtersuggest?query='+text
+        fetch(url).then( response=>response.json().then( r=>{
+          if(r.content !=="[Errno Expecting value] : 0"){
+            setSuggestResults(r.content)
+          }
+        }))
+      }catch (error){
+        alert(error)
+      }}
     return (
-      <View >
-        <Icon style = {Style.random} name = 'filter' color = '#000000' size = {20}/>
-        <TextInput
-          style={Style.container}
-          placeholder='Filter'
-          onChangeText={(userInput) => {
-            setText(userInput)
-            clearTimeout(TO)
-            TO=setTimeout(() => {
-              try{ 
-                const url='https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/filtersuggest?query='+text
-                fetch(url).then( response=>response.json().then( r=>{
-                  setSuggestResults(r.content)
-                }))
-              }catch (error){
-                alert(error)
-              }
-            }, 3000)
-          }}/>
-          {suggestResults? <FilterContainer suggestResults={suggestResults}/> : null}
-        
+      <View>
+        <View style={Style.container}>
+          <Icon style = {Style.filter} name = 'filter' color = '#000000' size = {20} onPress={() => filterSet()}/>
+          <TextInput
+            style={Style.input}
+            placeholder='Filter'
+            onChangeText={(userInput) => {
+              setText(userInput)
+            }}/>
+        </View>
+          {suggestResults? <FilterContainer suggestResults={suggestResults} setSuggestionResults={setSuggestResults}/> : null}
       </View>
     )
   }
@@ -37,6 +38,10 @@ import FilterContainer from './FilterContainer'
  
   const Style=StyleSheet.create({
     container: {
+      display: 'flex',
+      flexDirection: 'row'
+    },
+    input:{
       width: '50%',
       height: 40,
       margin: 12,
@@ -46,9 +51,13 @@ import FilterContainer from './FilterContainer'
       borderRadius: 10,
       paddingLeft: 28
     },
-    random: {
-        top: 43,
-        left: 20
+    filter: {
+      display: 'flex',
+      top: 20,
+      marginLeft: 3
+    },
+    box: {
+      
     }
   })
  
