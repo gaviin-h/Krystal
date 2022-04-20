@@ -23,9 +23,6 @@ export type AmplifyDependentResourcesAttributes = {
             "Region": "string",
             "LambdaExecutionRole": "string"
         },
-        "krystalLayerOne": {
-            "Arn": "string"
-        },
         "EntanglementRating": {
             "Name": "string",
             "Arn": "string",
