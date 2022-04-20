@@ -6,11 +6,11 @@ export default function FilterContainer({ suggestResults, setSuggestionResults})
   const [ currentFilters, setCurrentFilters ] = useState([])
   function addTerm(term){
     setCurrentFilters(currentFilters.concat(term))
-    setSuggestionResults(suggestResults.filter((cur) => String(Object.keys(cur)) !== term))
+    setSuggestionResults(suggestResults.filter((cur) => cur !== term))
   }
   function deleteTerm(term){
     setCurrentFilters(currentFilters.filter((cur) => cur !== term))   
-    // setSuggestionResults(suggestResults.concat( term ))
+    setSuggestionResults(suggestResults.concat( term ))
   }
   const Style = StyleSheet.create({
     container: {
@@ -46,7 +46,7 @@ export default function FilterContainer({ suggestResults, setSuggestionResults})
         /> )) : null}
       {suggestResults? suggestResults.map((term) => 
       ( <FilterBubble 
-          term={String(Object.keys(term))}
+          term={term}
           functionality={addTerm}
           style={Style.bubble2}
         /> )) : null}
