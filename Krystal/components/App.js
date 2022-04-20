@@ -16,6 +16,8 @@
  import AccountSettings from './AccountSettings'
  import ContentSettings from './ContentSettings';
  import ShareContainer from './ShareContainer'
+ import Filter from './Filter';
+ import FilterButton from './FilterButton'
 
  // Amplify AWS stuff
  import { Amplify, Auth } from 'aws-amplify'
@@ -38,7 +40,8 @@
            headerTitle: () => 
              <Header 
                navigation={drawerNav}/>}}>
-       <Stack.Screen name='home'>
+       <Stack.Screen name='home'
+          options={(props) => ({headerRight: () => (<FilterButton navigation={props.navigation}/>)})}>
          { props => <Main 
          queue={queue}
          navigation={props.navigation}
@@ -50,6 +53,14 @@
          { props => <ArticlePage 
          navigation={props.navigation}
          article={currentArticle}/>}
+       </Stack.Screen>
+       <Stack.Screen 
+        name='filter' 
+        options={{ 
+          presentation: 'modal',
+          headerShown: false  }}>
+          { props => <Filter 
+          navigation={props.navigation}/>}
        </Stack.Screen>
      </Stack.Navigator>
    )
@@ -74,9 +85,8 @@
       })
     })
     let user = await Auth.currentAuthenticatedUser();
-    console.log(user.attributes['custom:private_keys'])
     let result = await Auth.updateUserAttributes(user, {
-        'custom:private_keys': query+','+user.attributes['custom:private_keys'].slice(0,256-length(query)),
+        'custom:private_keys': query+','+user.attributes['custom:private_keys'],
     });
     console.log(result)
  }
@@ -84,8 +94,8 @@
    try {
     let attempt= await Auth.signIn(user, pass)
     setUserInfo(attempt.attributes)
-
-    fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country=russia").then((response) => {
+    let term=attempt.attributes['custom:private_keys'].split(',')
+    fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country="+term[0]).then((response) => {
       response.json().then((data) => {
         setQueue(data.articles.content.articles)
       })

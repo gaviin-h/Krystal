@@ -1,4 +1,2 @@
-{ 
-  "filter_id": "3342",
-  "articles" : ["Washington Post"]
-}
+{ "filter_id": "event",
+  "articles": [ "Washington Post" ] }

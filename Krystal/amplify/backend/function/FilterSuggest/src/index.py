@@ -8,10 +8,10 @@ def handler(event, context):
         
     try: 
         response = requests.get(url).json()
-        r=[]
+        r={}
         for item in response['data']:
             if item['attributes']['parent_id'] is None or len(r)==0:
-                r.append( {item['attributes']['name']: (item['attributes']['id'], item['attributes']['aliases'])} ) 
+                r[item['attributes']['name']]= (item['attributes']['id'], item['attributes']['aliases'])
 
     except Exception as e:
         r=str(e)
