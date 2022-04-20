@@ -1,34 +1,35 @@
 import React, { useState } from 'react'
-import { View, StyleSheet} from 'react-native';
+import { StyleSheet, ScrollView} from 'react-native';
 import FilterBubble from './FilterBubble'
 
 export default function FilterContainer({ suggestResults, setSuggestionResults}){
   const [ currentFilters, setCurrentFilters ] = useState([])
   function addTerm(term){
     setCurrentFilters(currentFilters.concat(term))
-    // setSuggestionResults(suggestResults.filter((cur) => Object.keys(cur) !== term))
+    setSuggestionResults(suggestResults.filter((cur) => String(Object.keys(cur)) !== term))
   }
   function deleteTerm(term){
-    setCurrentFilters(currentFilters.filter((cur) => cur !== term))
+    setCurrentFilters(currentFilters.filter((cur) => cur !== term))   
+    // setSuggestionResults(suggestResults.concat( term ))
   }
   const Style = StyleSheet.create({
     container: {
-      backgroundColor: 'grey',
-      width: 200,
-      height: 300,
+      backgroundColor: 'darkgrey',
+      width: 350,
+      height: '85%',
       boderRadius: 20,
       marginLeft: 20,
       zIndex: -1,
     },
     bubble1: {
-      backgroundColor:'green',
+      backgroundColor:'lightgreen',
       height: 20,
       width: 'auto',
       borderRadius: 10,
       margin: 5
     },
     bubble2: {
-      backgroundColor:'blue',
+      backgroundColor:'lightblue',
       height: 20,
       width: 'auto',
       borderRadius: 10,
@@ -36,7 +37,7 @@ export default function FilterContainer({ suggestResults, setSuggestionResults})
     }
   })
   return (
-    <View style={Style.container}>
+    <ScrollView style={Style.container}>
       {currentFilters? currentFilters.map((term) => 
       ( <FilterBubble 
           term={term}
@@ -49,6 +50,6 @@ export default function FilterContainer({ suggestResults, setSuggestionResults})
           functionality={addTerm}
           style={Style.bubble2}
         /> )) : null}
-    </View>
+    </ScrollView>
   )
 }
