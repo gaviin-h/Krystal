@@ -16,7 +16,8 @@
  import AccountSettings from './AccountSettings'
  import ContentSettings from './ContentSettings';
  import ShareContainer from './ShareContainer'
- import SearchFilter from './Filter';
+ import Filter from './Filter';
+ import FilterButton from './FilterButton'
 
  // Amplify AWS stuff
  import { Amplify, Auth } from 'aws-amplify'
@@ -39,7 +40,8 @@
            headerTitle: () => 
              <Header 
                navigation={drawerNav}/>}}>
-       <Stack.Screen name='home'>
+       <Stack.Screen name='home'
+          options={(props) => ({headerRight: () => (<FilterButton navigation={props.navigation}/>)})}>
          { props => <Main 
          queue={queue}
          navigation={props.navigation}
@@ -51,6 +53,14 @@
          { props => <ArticlePage 
          navigation={props.navigation}
          article={currentArticle}/>}
+       </Stack.Screen>
+       <Stack.Screen 
+        name='filter' 
+        options={{ 
+          presentation: 'modal',
+          headerShown: false  }}>
+          { props => <Filter 
+          navigation={props.navigation}/>}
        </Stack.Screen>
      </Stack.Navigator>
    )

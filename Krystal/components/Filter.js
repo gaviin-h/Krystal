@@ -1,36 +1,44 @@
-import { View, TextInput, StyleSheet, Text} from 'react-native';
-import React, { useState } from 'react';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { View, TextInput, StyleSheet} from 'react-native';
+import React, { useState,useEffect } from 'react';
 import FilterContainer from './FilterContainer'
-// import Icon from 'react-native-vector-icons/Feather';
  
-  function Filter({}) {
+  function Filter() {
     const [ text, setText ] = useState()
-    const [ suggestResults, setSuggestResults] = useState(null)
-
-    async function filterSet(){
-      try{ 
-        const url='https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/filtersuggest?query='+text
-        fetch(url).then( response=>response.json().then( r=>{
-          if(r.content !=="[Errno Expecting value] : 0"){
-            setSuggestResults(r.content)
+    const [ suggestResults, setSuggestResults] = useState([])
+    const [ oldText, setOldText ] = useState('')
+    useEffect(() => {
+      let isCancelled=false
+      setTimeout(() => {
+        if(text!=='' && !isCancelled && oldText!==text){
+          setOldText(text)
+          try{ 
+            const url='https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/filtersuggest?query='+text
+            console.log(url)
+            fetch(url).then( response=>response.json().then( r=>{
+              console.log(r.content)
+              setSuggestResults(r.content)
+            }))
+          }catch (error){
+            console.log(error)
           }
-        }))
-      }catch (error){
-        alert(error)
-      }}
+        }
+      }, 3000)
+      
+      return () => {
+        isCancelled = true
+      }})
     return (
       <View>
         <View style={Style.container}>
-          <Icon style = {Style.filter} name = 'filter' color = '#000000' size = {20} onPress={() => filterSet()}/>
           <TextInput
             style={Style.input}
             placeholder='Filter'
             onChangeText={(userInput) => {
               setText(userInput)
-            }}/>
+            }}
+            />
         </View>
-          {suggestResults? <FilterContainer suggestResults={suggestResults} setSuggestionResults={setSuggestResults}/> : null}
+          {suggestResults ? <FilterContainer suggestResults={suggestResults} setSuggestionResults={setSuggestResults}/> : null}
       </View>
     )
   }
