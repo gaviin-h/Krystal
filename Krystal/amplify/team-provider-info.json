@@ -23,11 +23,15 @@
         },
         "FilterSuggest": {
           "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
-          "s3Key": "amplify-builds/FilterSuggest-725677497a6b70334d38-build.zip"
+          "s3Key": "amplify-builds/FilterSuggest-6f4f335549546d557065-build.zip"
         },
         "krystalLayerOne": {
           "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
           "s3Key": "amplify-builds/krystalLayerOne-LambdaLayerVersion88bc3f8e-build.zip"
+        },
+        "EntanglementRating": {
+          "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
+          "s3Key": "amplify-builds/EntanglementRating-525451796353534e5a30-build.zip"
         }
       }
     }

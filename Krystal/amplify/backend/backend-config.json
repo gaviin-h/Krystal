@@ -42,6 +42,11 @@
       "providerPlugin": "awscloudformation",
       "service": "LambdaLayer",
       "build": true
+    },
+    "EntanglementRating": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
     }
   },
   "api": {
