@@ -16,7 +16,8 @@ import FilterContainer from './FilterContainer'
             console.log(url)
             fetch(url).then( response=>response.json().then( r=>{
               console.log(r.content)
-              setSuggestResults(r.content)
+              setSuggestResults(Object.keys(r.content))
+              console.log(Object.keys(r.content))
             }))
           }catch (error){
             console.log(error)
