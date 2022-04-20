@@ -85,9 +85,8 @@
       })
     })
     let user = await Auth.currentAuthenticatedUser();
-    console.log(user.attributes['custom:private_keys'])
     let result = await Auth.updateUserAttributes(user, {
-        'custom:private_keys': query+','+user.attributes['custom:private_keys'].slice(0,256-length(query)),
+        'custom:private_keys': query+','+user.attributes['custom:private_keys'],
     });
     console.log(result)
  }
@@ -95,8 +94,8 @@
    try {
     let attempt= await Auth.signIn(user, pass)
     setUserInfo(attempt.attributes)
-
-    fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country=russia").then((response) => {
+    let term=attempt.attributes['custom:private_keys'].split(',')
+    fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country="+term[0]).then((response) => {
       response.json().then((data) => {
         setQueue(data.articles.content.articles)
       })
