@@ -44,15 +44,19 @@ def handler(event, context=None):
 			# maybe try to implement logging here
 			print(e)
 
-	def build_list(filter_id):
-		time.sleep(.2)
-		related=[filter_id]
-		url=f'https://littlesis.org/api/entities/{filter_id}/relationships'
-		r=requests.get(url).json()
-		for child in r['data']:
-			new_id=child['attributes']['entity1_id'] if child['attributes']['entity1_id'] != filter_id else child['attributes']['entity2_id']
-			if new_id not in related:
-				related.append(new_id)
+	def build_list(_id):
+		related=[_id]
+		try:
+			url=f'https://littlesis.org/api/entities/{_id}/relationships'
+			r=requests.get(url).json()
+			for child in r['data']:
+				new_id=child['attributes']['entity1_id'] if child['attributes']['entity1_id'] != _id else child['attributes']['entity2_id']
+				if new_id not in related:
+					related.append(new_id)
+		except Exception as e:
+			print(e)
+			print(url)
+
 
 		return related
 	# Search the tree for any hits
@@ -63,26 +67,32 @@ def handler(event, context=None):
 					return [node]
 				return [node]+dfs(child, search_ids)
 
-  #################
+	def get_id(_name):
+		url=f'https://littlesis.org/api/entities/search?q={_name}'
+		try:
+			req=requests.get(url).json()
+			r=req['data'][0]['id']
+			return r
+		except Exception as e:
+			print(e)
+	
+	#################
 	## MAIN METHOD ## 
 	#################
 	root=build_list(int(event['filter_id']))
-	root+=[build_list(i) for i in root[1:]]
-	entities={}
+	root_set=set(root)
+	connections={}
+	leaves=[]
 	# go through current queue and resolve entities in the form {id: name}
 	for i in event['articles']:
 		# get the id of the top result and assume for now
 		# maybe use the website to cross reference in the future?
-		try:
-			response = requests.get('https://littlesis.org/api/entities/search?q='+i).json()
-			entities[response['data'][0]['id']]=i
-		except Exception as e:
-			# log?
-			print(e)
-	connections={}
-	for i in entities:
-		if i in root:
-			connections[entities[i]]=root[0]
+		article_id=get_id(i)
+		leaf=build_list(article_id)
+		connections=False
+		leaves+=leaf
+		if bool( root_set & set(leaf)):
+			connections=True
 	# print(root.id)
 	# print(root.list_children())
 	# print('\n')
@@ -93,6 +103,8 @@ def handler(event, context=None):
 	# path=dfs(root, entities)
 
 	return {
+		'root' : root,
+		'leafs': leaves,
     'content': connections
   }
 
