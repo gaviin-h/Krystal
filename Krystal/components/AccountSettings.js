@@ -86,7 +86,7 @@ function AccountSettings(navigation, userInfo){
         </View>
       )
       function logTest(userInfo){
-          console.log(String(userInfo))
+          //console.log(String(userInfo))
       }
 }
 export default AccountSettings

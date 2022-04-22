@@ -33,7 +33,7 @@ function Search({search}) {
         style={Style.search}
         placeholder='Search...'
         onChangeText={(text) => setCurrentQuery(text)}/>
-        <View>
+       <View>
         <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
           <TouchableOpacity style={Style.container} onPress={ () =>search(currentQuery)}>
           <Text style={{textAlign: "center", fontWeight: "bold"}}>SEARCH</Text>
@@ -46,6 +46,7 @@ function Search({search}) {
 }
 
 /*
- <Button title='Search' onPress={() => search(currentQuery)} />
+
+  <Button title='Search' onPress={() => search(currentQuery)} />
 */
 export default Search

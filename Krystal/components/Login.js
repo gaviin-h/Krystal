@@ -1,7 +1,8 @@
-import { View, TextInput, Button } from 'react-native';
+import { View, TextInput, Button, ImageBackground, Text} from 'react-native';
 import React, { useState } from 'react';
 import {Image, StyleSheet} from 'react-native'
 import { Auth } from 'aws-amplify';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import logo from '../li.png'
 
 function Login({ navigation, attemptLogin, setUserInfo }){
@@ -46,6 +47,17 @@ function Login({ navigation, attemptLogin, setUserInfo }){
       borderColor: 'white',
       borderRadius: 10,
     },
+    container:{ 
+      //flex: 1,
+     // borderColor: 'gray',
+      //borderRadius: 10,
+      //borderWidth: 2,
+      padding: 3,
+      margin: 2,
+      //opacity: 1,
+      //backgroundColor: 'gray',
+      
+    },
     button: {
       MarginBottom: 20,
       padding: 20,
@@ -74,20 +86,48 @@ function Login({ navigation, attemptLogin, setUserInfo }){
         placeholder='password' 
         onChangeText={text => setPass(text)} 
         secureTextEntry={true}/>
-
-      <Button style= {Style.SubmitButtonStyle} onPress={() => {
+        <Button style= {Style.SubmitButtonStyle} onPress={() => {
         attemptLogin(user, pass)}} 
         title='login'/>
-      <Button style= {Style.button}
+        <Button style= {Style.button}
         color='grey' 
         title='create account' 
         onPress={() => navigation.navigate("createAccount")}/>
-      <Button style= {Style.button} onPress={() => { user? 
+        <Button style= {Style.button} onPress={() => { user? 
         forgot() : alert('Please enter your email first')}} 
         title='forgot password?'
         color='grey'/>
+      
     </View>
   )
-}
+}/*
+
+
+        <View style={{padding: 3}}>
+        <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1, padding: 5}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
+          <TouchableOpacity style={Style.container} onPress={() => {
+        attemptLogin(user, pass)}} 
+        title='login'>
+          <Text style={{textAlign: "center", fontWeight: "bold"}}>LOGIN</Text>
+          </TouchableOpacity>
+          </ImageBackground>
+        </View>
+        <View style={{padding: 3}}>
+        <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1, padding: 5}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
+          <TouchableOpacity style={Style.container} onPress={() => navigation.navigate("createAccount")}>
+          <Text style={{textAlign: "center", fontWeight: "bold"}}>CREATE ACCOUNT</Text>
+          </TouchableOpacity>
+          </ImageBackground>
+        </View>
+        <View style={{padding: 3}}>
+        <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1, padding: 5}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
+          <TouchableOpacity style={Style.container} onPress={() => { user? 
+        forgot() : alert('Please enter your email first')}}>
+          <Text style={{textAlign: "center", fontWeight: "bold"}}>FORGOT PASSWORD?</Text>
+          </TouchableOpacity>
+          </ImageBackground>
+        </View>
+
+*/
 
 export default Login
