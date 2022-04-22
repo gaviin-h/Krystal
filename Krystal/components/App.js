@@ -92,10 +92,14 @@
  }
  async function attemptLogin(user, pass){
    try {
-    let attempt= await Auth.signIn(user, pass)
+    let attempt=await Auth.signIn(user, pass)
     setUserInfo(attempt.attributes)
-    let term=attempt.attributes['custom:private_keys'].split(',')
-    fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country="+term[0]).then((response) => {
+    console.log(typeof(attempt.attributes))
+    let term='apple'
+    if (attempt.attributes['custom:private_keys'] !== undefined){
+      term=attempt.attributes['custom:private_keys'].split(',')
+    }
+      fetch("https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/suggestengine?country="+term[0]).then((response) => {
       response.json().then((data) => {
         setQueue(data.articles.content.articles)
       })

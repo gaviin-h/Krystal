@@ -1,5 +1,6 @@
 import json
 import requests
+import time
 
 def handler(event, context=None):
 	DEPTH=1
@@ -44,6 +45,7 @@ def handler(event, context=None):
 			print(e)
 
 	def build_list(filter_id):
+		time.sleep(.2)
 		related=[filter_id]
 		url=f'https://littlesis.org/api/entities/{filter_id}/relationships'
 		r=requests.get(url).json()
@@ -65,6 +67,7 @@ def handler(event, context=None):
 	## MAIN METHOD ## 
 	#################
 	root=build_list(int(event['filter_id']))
+	root+=[build_list(i) for i in root[1:]]
 	entities={}
 	# go through current queue and resolve entities in the form {id: name}
 	for i in event['articles']:
