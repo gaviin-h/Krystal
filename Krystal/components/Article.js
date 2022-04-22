@@ -66,9 +66,7 @@ function Article({ article, navigation, setCurrentArticle}) {
       onPress={ () => {
         setCurrentArticle(article)
         navigation.navigate('articlePage')}}>
-          <View style={Style.header}>
-          <Image resizeMode="cover" source={getLogo(article)} style={{maxWidth:50,height:50,}}></Image>
-          </View>
+         
       <ImageBackground source={image} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray'}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
       <Text style={Style.title}>
         {article.title}
@@ -84,6 +82,11 @@ function Article({ article, navigation, setCurrentArticle}) {
     
   )
 }
+/*
+<View style={Style.header}>
+          <Image resizeMode="cover" source={getLogo(article)} style={{maxWidth:50,height:50,}}></Image>
+          </View>
+*/
 function getLogo(article){
   if(typeof article.source!=='undefined'){
     

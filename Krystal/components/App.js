@@ -136,14 +136,24 @@
     title: 'Stone Burns',
     author: 'Gavin Newsom',
     description: 'The end times are upon us',
-    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html'
+    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html',
+    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
+    source: {
+      id: "bbc-news",
+      name: "BBC News"
+      },
   },
   {
     key: 2,
     title: 'Butterfly Away',
     author: 'Miley Cyrus',
     description: 'Idk I dont listen to Miley',
-    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic'
+    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic',
+    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
+    source: {
+      id: "bbc-news",
+      name: "BBC News"
+      },
   }
 ])
  
