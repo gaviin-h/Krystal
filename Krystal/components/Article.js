@@ -135,6 +135,8 @@ function getLogo(article){
       return require('../cnn.jpg');
     }if(String(article.source['name'])=="Reuters"){
       return require('../Reuters.jpg');
+    }if(String(article.source['name'])=="The Verge"){
+      return require('../verge.jpg');
     }else{
       return require('../default.jpg');
     }

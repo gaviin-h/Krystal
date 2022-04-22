@@ -1,5 +1,5 @@
 import { Image, StyleSheet, View } from 'react-native'
-import logo from '../li.png'
+import logo from '../limt.png'
 import React from 'react'
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -8,7 +8,7 @@ function Header({ navigation }) {
     image: {
       marginTop: 5,
       height: 50,
-      width: 50,
+      width: 100,
     },
     view: {
       justifyContent: 'center',
