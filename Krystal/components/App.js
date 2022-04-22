@@ -214,7 +214,8 @@
               //  navigation={props.navigation}/> 
             })}>
              {props => <AccountSettings 
-             navigation={props.navigation}/>}
+             navigation={props.navigation}
+             userInfo = {userInfo}/>}
            </Drawer.Screen>
            <Drawer.Screen name="Content Settings"options={ (props) => ({
               headerShown: true,

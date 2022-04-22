@@ -1,10 +1,12 @@
 import { View, TextInput, Button, Text } from 'react-native';
 import React, { useState } from 'react';
-import {StyleSheet} from 'react-native'
+import {StyleSheet} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
-import Header from './Header'
+import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer';
+import Header from './Header';
+import { UserAgent } from 'amazon-cognito-identity-js';
+
 
 function AccountSettings(navigation, userInfo){
     const [ first, setFirstName ] = useState(null)
@@ -38,6 +40,7 @@ function AccountSettings(navigation, userInfo){
             <Text style={Style.title}>
              {"     Last Name"}
              </Text>
+             <Text test ={logTest(userInfo)}></Text>
           <TextInput style={Style.TextInput} 
             placeholder='Enter new Last Name' 
             onChangeText={text => setLastName(text)} 
@@ -80,8 +83,10 @@ function AccountSettings(navigation, userInfo){
             color='grey' 
             title='Add' 
             onPress={() => navigation.navigate("login")}/>
-
         </View>
       )
+      function logTest(userInfo){
+          console.log(String(userInfo))
+      }
 }
 export default AccountSettings

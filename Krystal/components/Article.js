@@ -7,15 +7,30 @@ const DEFAULT_IMAGE = Image.resolveAssetSource(DefaultImage).uri;
 
 const Style=StyleSheet.create({
   title: {
+    flex: 1, flexWrap: 'wrap',
+    //flexWrap: 'wrap',
+    marginLeft: 6,
+    //display: 'flex',
+    //overflow: 'hidden',
+    //textAlignVertical:'top',
+    //borderRadius: 6, borderColor:'gray',
     //textShadowColor: '#000', textShadowOffset: { width: 1.5, height: 1.5 }, textShadowRadius: 1,
-    //backgroundColor: "gray",
+    //backgroundColor: "black",
     fontSize: 20,
     fontWeight: 'bold',
     color: "black",
-    padding: 5
+    padding: 2,
+
+    //textAlign: 'center',
   },
   header: {
-    backgroundColor: "black",
+    marginTop: 2,
+    marginLeft: 2,
+    flexDirection: 'row',
+    //display: 'flex',
+    //alignItems: 'center',
+    //justifyContent: 'center',
+    //backgroundColor: "black",
       borderColor: "black",
       borderRadius: 6,
   },
@@ -32,7 +47,8 @@ const Style=StyleSheet.create({
 
     color: "#282828",
     fontWeight: 'bold',
-    marginLeft: 20
+    marginLeft: 20,
+    marginBottom: 10
   },
   image: {
     opacity:0.5,
@@ -43,9 +59,10 @@ const Style=StyleSheet.create({
   
     flex: 1,
     borderColor: 'gray',
+    
     //borderRadius: 10,
     //borderWidth: 2,
-    padding: 1,
+    padding: 3,
     margin: 2,
     //opacity: 1,
     //backgroundColor: 'gray',
@@ -67,13 +84,13 @@ function Article({ article, navigation, setCurrentArticle}) {
         setCurrentArticle(article)
         navigation.navigate('articlePage')}}>
          
-      <ImageBackground source={image} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray'}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
+      <ImageBackground source={image} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
+      <View style={Style.header}>
+      <Image resizeMode='cover' source={getLogo(article)} style={{maxWidth:50,height:50, borderRadius: 6, borderColor:'gray'}}></Image>
       <Text style={Style.title}>
         {article.title}
       </Text>
-      <Text style={Style.author}>
-      {article.author}
-      </Text>
+      </View>
       <Text style={Style.description}>
         {article.description}
       </Text>
@@ -84,7 +101,7 @@ function Article({ article, navigation, setCurrentArticle}) {
 }
 /*
 <View style={Style.header}>
-          <Image resizeMode="cover" source={getLogo(article)} style={{maxWidth:50,height:50,}}></Image>
+         
           </View>
 */
 function getLogo(article){
@@ -97,25 +114,29 @@ function getLogo(article){
         return require('../BBC_News.png');
     }
     if(String(article.source['name'])=="Associated Press"){
-      return require('../New_York_Times.png');
+      return require('../ap.jpg');
     }
     if(String(article.source['name'])=="Fox News"){
-      return require('../New_York_Times.png');
+      return require('../fox.png');
     }
     if(String(article.source['name'])=="CNN"){
       return require('../cnn.jpg');
     }if(String(article.source['name'])=="CNBC"){
-      return require('../cnn.jpg');
+      return require('../cnbc.png');
     }if(String(article.source['name'])=="ESPN"){
-      return require('../cnn.jpg');
+      return require('../espn.png');
     }if(String(article.source['name'])=="The Washington Post"){
-      return require('../cnn.jpg');
+      return require('../wp.png');
     }if(String(article.source['name'])=="Marca"){
       return require('../cnn.jpg');
     }if(String(article.source['name'])=="Yahoo Entertainment"){
-      return require('../cnn.jpg');
+      return require('../yahoo.png');
     }if(String(article.source['name'])=="Barron's"){
       return require('../cnn.jpg');
+    }if(String(article.source['name'])=="Reuters"){
+      return require('../Reuters.jpg');
+    }else{
+      return require('../default.jpg');
     }
   }
 }
