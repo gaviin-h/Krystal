@@ -38,10 +38,10 @@
       "providerPlugin": "awscloudformation",
       "service": "Lambda"
     },
-    "krystalLayerOne": {
+    "EntanglementRating": {
+      "build": true,
       "providerPlugin": "awscloudformation",
-      "service": "LambdaLayer",
-      "build": true
+      "service": "Lambda"
     }
   },
   "api": {
