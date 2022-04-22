@@ -97,7 +97,7 @@ def handler(event, context=None):
 	connections={}
 	# leaves=[]
 	# go through current queue and resolve entities in the form {id: name}
-	for i in event['articles']:
+	for i in event['articles'].split(','):
 		# get the id of the top result and assume for now
 		# maybe use the website to cross reference in the future?
 		article_id=None
@@ -112,3 +112,4 @@ def handler(event, context=None):
 	return {
     'content': connections
   }
+
