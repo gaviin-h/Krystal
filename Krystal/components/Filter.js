@@ -21,8 +21,7 @@ import FilterContainer from './FilterContainer'
             }))
           }catch (error){
             console.log(error)
-          }
-        }
+          }}
       }, 3000)
       
       return () => {
