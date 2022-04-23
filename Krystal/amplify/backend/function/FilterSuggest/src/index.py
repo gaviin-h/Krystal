@@ -1,4 +1,4 @@
-def handler(event, context):
+def handler(event, context=0):
     import requests
     q=event['query']
     TAGS=['anti-choice', 'anti-gender', 'anti-transgender', 'australia', 'boston', 'buffalo', 'coronavirus', 'corporate-mapping-project', 'defence', 'finance', 'florida', 'fracking', 'georgia', 'hindutva', 'iapd', 'icecontractor', 'louisiana', 'massachusetts', 'méxico', 'michigan', 'migrantjustice', 'nys', 'philly', 'PIC', 'prosecutor', 'puerto-rico', 'raleigh', 'real-estate', 'san-diego', 'seditioncaucus', 'st.-louis', 'tech', 'virginia']
@@ -11,7 +11,7 @@ def handler(event, context):
         r={}
         for item in response['data']:
             if item['attributes']['parent_id'] is None or len(r)==0:
-                r[item['attributes']['name']]= (item['attributes']['id'], item['attributes']['aliases'])
+                r[item['attributes']['name']]= item['attributes']['id']
 
     except Exception as e:
         r=str(e)
