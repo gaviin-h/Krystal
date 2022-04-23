@@ -20,7 +20,7 @@
  import FilterButton from './FilterButton'
 
  // Amplify AWS stuff
- import { Amplify, Auth } from 'aws-amplify'
+ import { Amplify, Auth, selectInput } from 'aws-amplify'
  import awsconfig from '../src/aws-exports'
  Amplify.configure({
    ...awsconfig,
@@ -70,7 +70,38 @@
  
  // APP FUNCTION CALL 
  const App = () => {
- 
+ // State
+ const [ userInfo, setUserInfo ] = useState(null)
+ const [ currentArticle, setCurrentArticle ] = useState(null)
+ const [ forgotEmail, setForgotEmail ] = useState(null)
+ const [ currentFilters, setCurrentFilters ] = useState({})
+ const [ currentEntities, setCurrentEntities ] = useState([])
+ const [ queue, setQueue ] = useState([
+  {
+    key: 1,
+    title: 'Stone Burns',
+    author: 'Gavin Newsom',
+    description: 'The end times are upon us',
+    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html',
+    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
+    source: {
+      id: "bbc-news",
+      name: "BBC News"
+      },
+  },
+  {
+    key: 2,
+    title: 'Butterfly Away',
+    author: 'Miley Cyrus',
+    description: 'Idk I dont listen to Miley',
+    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic',
+    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
+    source: {
+      id: "bbc-news",
+      name: "BBC News"
+      },
+  }
+])
  // search 
  async function search(query){
    const date = new Date()
@@ -84,13 +115,15 @@
      response.json().then((data)=>{
          // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
         setQueue(data.articles.slice(0,20))
+        updateEntities()
+        console.log(currentEntities)
       })
     })
     let user = await Auth.currentAuthenticatedUser();
-    let result = await Auth.updateUserAttributes(user, {
+    await Auth.updateUserAttributes(user, {
+      // slice this
         'custom:private_keys': query+','+user.attributes['custom:private_keys'],
     });
-    console.log(result)
  }
  async function attemptLogin(user, pass){
    try {
@@ -128,37 +161,36 @@
      alert(error)
    }
  } 
- // State
- const [ userInfo, setUserInfo ] = useState(null)
- const [ currentArticle, setCurrentArticle ] = useState(null)
- const [ forgotEmail, setForgotEmail ] = useState(null)
- const [ currentFilters, setCurrentFilters ] = useState([])
- const [ queue, setQueue ] = useState([
-  {
-    key: 1,
-    title: 'Stone Burns',
-    author: 'Gavin Newsom',
-    description: 'The end times are upon us',
-    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html',
-    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
-    source: {
-      id: "bbc-news",
-      name: "BBC News"
-      },
-  },
-  {
-    key: 2,
-    title: 'Butterfly Away',
-    author: 'Miley Cyrus',
-    description: 'Idk I dont listen to Miley',
-    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic',
-    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
-    source: {
-      id: "bbc-news",
-      name: "BBC News"
-      },
-  }
-])
+ function updateEntities(){
+   setCurrentEntities([])
+   let temp=[]
+   queue.forEach((article) => {
+     if( !temp.includes(article.source.name)){
+       temp.concat(article.source.name)
+       console.log(temp)
+     }})
+    setCurrentEntities(temp)
+ }
+ async function check(){
+  let entities=''
+  currentEntities.forEach((i) => {
+    entities+=i+','
+  })
+  Object.keys(currentFilters).forEach((i) => {
+    try{
+      let url = 'https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/entanglementrating?filter_id='+currentFilters[i]+'articles'+entities
+      let req=new Request(url)
+      fetch(req).then((response) => {
+        response.json().then((data)=>{
+         // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
+      })
+    })
+
+    }catch(error){
+      console.log(error)
+    }
+  })
+ }
  
  // RETURN
    return (
