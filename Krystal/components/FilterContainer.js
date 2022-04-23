@@ -2,8 +2,7 @@ import React, { useState } from 'react'
 import { StyleSheet, ScrollView} from 'react-native';
 import FilterBubble from './FilterBubble'
 
-export default function FilterContainer({ suggestResults, setSuggestionResults}){
-  const [ currentFilters, setCurrentFilters ] = useState([])
+export default function FilterContainer({ currentFilters, setCurrentFilters, suggestResults, setSuggestionResults}){
   function addTerm(term){
     setCurrentFilters(currentFilters.concat(term))
     setSuggestionResults(suggestResults.filter((cur) => cur !== term))

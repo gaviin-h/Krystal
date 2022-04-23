@@ -33,7 +33,7 @@
  const Stack = createNativeStackNavigator();
  const Drawer = createDrawerNavigator();
  
- const HomeDrawer = ({drawerNav, queue, search, setCurrentArticle, currentArticle}) => {
+ const HomeDrawer = ({drawerNav, queue, search, setCurrentArticle, currentArticle, currentFilters, setCurrentFilters}) => {
    return(
      <Stack.Navigator initialRouteName='home'
        screenOptions={{ 
@@ -59,7 +59,9 @@
         options={{ 
           presentation: 'modal',
           headerShown: false  }}>
-          { props => <Filter 
+          { props => <Filter
+          currentFilters={currentFilters} 
+          setCurrentFilters={setCurrentFilters}  
           navigation={props.navigation}/>}
        </Stack.Screen>
      </Stack.Navigator>
@@ -130,6 +132,7 @@
  const [ userInfo, setUserInfo ] = useState(null)
  const [ currentArticle, setCurrentArticle ] = useState(null)
  const [ forgotEmail, setForgotEmail ] = useState(null)
+ const [ currentFilters, setCurrentFilters ] = useState([])
  const [ queue, setQueue ] = useState([
   {
     key: 1,
@@ -201,6 +204,8 @@
            )}}>
            <Drawer.Screen name='Home'>
              { props => <HomeDrawer 
+             currentFilters={currentFilters}
+             setCurrentFilters={setCurrentFilters}
              queue={queue}
              drawerNav={props.navigation}
              search={search}
