@@ -128,6 +128,7 @@
  async function attemptLogin(user, pass){
    try {
     let attempt=await Auth.signIn(user, pass)
+    
     setUserInfo(attempt.attributes)
     console.log(typeof(attempt.attributes))
     let term='apple'
@@ -140,7 +141,8 @@
       })
     })
    }catch(error){
-    alert(error)
+     alert("Incorrect login details, please try again.")
+    //alert(error)
    }
  }
  async function confirmSignUp(email, confirmCode, navigation, destination) {
@@ -149,7 +151,7 @@
      alert(conf)
      navigation.navigate(destination)
    }catch(error) {
-     alert(error)
+     //alert(error)
    }
  }
   async function changePassword( code, password, navigation){
@@ -158,7 +160,8 @@
      alert(conf)
      navigation.navigate('login')
    }catch(error) {
-     alert(error)
+     alert("Unable to find user, please re-enter email address.")
+     //alert(error)
    }
  } 
   function updateEntities(){
@@ -215,21 +218,23 @@
          <Stack.Navigator
            initialRouteName="login"
            >
-           <Stack.Screen name="login">
+           <Stack.Screen name="login" options={{
+            headerShown: false,
+          }}>
                { props => <Login 
                    attemptLogin={attemptLogin}
                    Auth = { Auth }
                    navigation={props.navigation} 
                    setUserInfo={setForgotEmail}/>}
              </Stack.Screen>
-             <Stack.Screen name="createAccount">
+             <Stack.Screen name="createAccount" options={{ title: '' }}>
                { props => <CreateAccount
                  setUserInfo={setUserInfo} 
                  Auth = { Auth }
                  navigation={props.navigation} 
                  confirmSignUp={confirmSignUp}/>}
              </Stack.Screen>
-             <Stack.Screen name='resetPass'>
+             <Stack.Screen name='resetPass' options={{ title: '' }}>
                {props => <ResetPass 
                email = {userInfo} 
                navigation={props.navigation} 
@@ -261,16 +266,23 @@
              currentArticle={currentArticle}/>}
            </Drawer.Screen>
            <Drawer.Screen name="Account Settings"
-            options={ (props) => ({
+            options={{
               headerShown: true,
               // headerTitle: () => <Header
               //  navigation={props.navigation}/> 
-            })}>
+            }}>
              {props => <AccountSettings 
              navigation={props.navigation}
-             userInfo = {userInfo}/>}
+            />}
            </Drawer.Screen>
-           <Drawer.Screen name="Content Settings"options={ (props) => ({
+           
+          </Drawer.Navigator>
+       </NavigationContainer>
+   );
+ };
+ 
+ /*
+<Drawer.Screen name="Content Settings"options={ (props) => ({
               headerShown: true,
              // headerTitle: () => <Header
                //navigation={props.navigation}/> 
@@ -278,9 +290,5 @@
              {props => <ContentSettings 
              navigation={props.navigation}/>}
            </Drawer.Screen>
-          </Drawer.Navigator>
-       </NavigationContainer>
-   );
- };
- 
+ */
  export default App;

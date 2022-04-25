@@ -1,7 +1,8 @@
-import { View, TextInput, Button, StyleSheet} from 'react-native';
+import { View, TextInput, Button, StyleSheet, ImageBackground, TouchableOpacity, Text} from 'react-native';
 import React, { useState } from 'react';
 import Confirm from './Confirm'
 import { Auth } from 'aws-amplify';
+import { ConsoleLogger } from '@aws-amplify/core';
 
 function CreateAccount({navigation, confirmSignUp}) {
   const [ email, setEmail ] = useState(null)
@@ -15,6 +16,21 @@ function CreateAccount({navigation, confirmSignUp}) {
     return email && email.includes('@') && email.includes('.')
   }
   function verifyUserDetails() {
+    
+    if(!lastName){
+      alert("Please enter a first name")
+      return false
+    }
+    if(!firstName){
+      alert("Please enter a last name")
+      return false
+    }
+    if(!validEmail()){
+      alert("Please enter a valid email")
+      return false
+    }
+    
+
     if( pass && pass===confirmPass){
       if(validEmail()){
         return true
@@ -24,9 +40,10 @@ function CreateAccount({navigation, confirmSignUp}) {
         return false
       }
     }else{
-      alert('Check Password')
+      alert('Passwords do not match')
       return false
     }
+    
   }
   async function createAccount(){
     if (verifyUserDetails()){
@@ -41,9 +58,18 @@ function CreateAccount({navigation, confirmSignUp}) {
           }})
           setAttempted(true)
       }catch (error) {
-        alert(error)
+        seeError(error)
+        //alert(error)
       }
     }
+  }
+  function seeError(error){
+      if(String(error).includes('InvalidParameterException')){
+        alert('Password too weak, enter a stronger password')
+      }
+      if(String(error).includes('UsernameExistsException')){
+        alert('User with email already exists, use "Forgot Password" if you have lost the password')
+      }
   }
 
   const Style = StyleSheet.create({
@@ -59,11 +85,23 @@ function CreateAccount({navigation, confirmSignUp}) {
       borderColor: 'white',
       borderRadius: 10,
     },
+    container:{ 
+      //flex: 1,
+     // borderColor: 'gray',
+      //borderRadius: 10,
+      //borderWidth: 2,
+      padding: 3,
+      margin: 2,
+      //opacity: 1,
+      //backgroundColor: 'gray',
+      
+    },
   })
 
   return (
     !attmpted? 
     <View>
+      
       <TextInput 
         style={Style.login_element} 
         placeholder='first name' 
@@ -89,11 +127,20 @@ function CreateAccount({navigation, confirmSignUp}) {
         placeholder='confirm password' 
         onChangeText={text => setConfirmPass(text)} 
         secureTextEntry={true}/>
-
-      <Button onPress={() => {createAccount()}} title='confirm'/>
+<View style={{padding: 3}}>
+        <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1, padding: 5}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
+          <TouchableOpacity style={Style.container} onPress={() => {createAccount()}} title='confirm'>
+          <Text style={{textAlign: "center", fontWeight: "bold"}}>CREATE ACCOUNT</Text>
+          </TouchableOpacity>
+          </ImageBackground>
+        </View>
+      
     </View> :
     <Confirm email={email} navigation={navigation} destination='login' confirmSignUp={confirmSignUp}/>
   )
 }
+/*
+<Button onPress={() => {createAccount()}} title='confirm'/>
+*/
 
 export default CreateAccount

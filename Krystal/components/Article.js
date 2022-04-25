@@ -8,43 +8,24 @@ const DEFAULT_IMAGE = Image.resolveAssetSource(DefaultImage).uri;
 const Style=StyleSheet.create({
   title: {
     flex: 1, flexWrap: 'wrap',
-    //flexWrap: 'wrap',
     marginLeft: 6,
-    //display: 'flex',
-    //overflow: 'hidden',
-    //textAlignVertical:'top',
-    //borderRadius: 6, borderColor:'gray',
-    //textShadowColor: '#000', textShadowOffset: { width: 1.5, height: 1.5 }, textShadowRadius: 1,
-    //backgroundColor: "black",
     fontSize: 20,
     fontWeight: 'bold',
     color: "black",
     padding: 2,
-
-    //textAlign: 'center',
   },
   header: {
     marginTop: 2,
     marginLeft: 2,
     flexDirection: 'row',
-    //display: 'flex',
-    //alignItems: 'center',
-    //justifyContent: 'center',
-    //backgroundColor: "black",
       borderColor: "black",
       borderRadius: 6,
   },
   author: {
-    //textShadowColor: '#000', textShadowOffset: { width: 1.5, height: 1.5 }, textShadowRadius: 1,
-    //backgroundColor: "gray",
     color: "black",
     fontWeight: 'bold',
-    //fontWeight: '300'
   },
   description: {
-    //textShadowColor: '#fff', textShadowOffset: { width: 0.5, height: 0.5 }, textShadowRadius: 1,
-    //backgroundColor: "gray",
-
     color: "#282828",
     fontWeight: 'bold',
     marginLeft: 20,
@@ -59,14 +40,8 @@ const Style=StyleSheet.create({
   
     flex: 1,
     borderColor: 'gray',
-    
-    //borderRadius: 10,
-    //borderWidth: 2,
     padding: 3,
     margin: 2,
-    //opacity: 1,
-    //backgroundColor: 'gray',
-    
   }
 
 })
