@@ -138,7 +138,7 @@ function AccountSettings(navigation){
             onChangeText={text => setFirstName(text)}/>
             <View style={{padding: 3}}>
         <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1, padding: 5}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
-          <TouchableOpacity style={Style.container} onPress={() => updateFirstName(first) } title='confirm'>
+          <TouchableOpacity style={Style.container} onPress={() => [updateFirstName(first),getCurrentFirstName()] } title='confirm'>
           <Text style={{textAlign: "center", fontWeight: "bold"}}>CHANGE FIRST NAME</Text>
           </TouchableOpacity>
           </ImageBackground>
@@ -154,7 +154,7 @@ function AccountSettings(navigation){
             />
             <View style={{padding: 3}}>
         <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1, padding: 5}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
-          <TouchableOpacity style={Style.container} onPress={() => updateLastName(last)} title='confirm'>
+          <TouchableOpacity style={Style.container} onPress={() => [updateLastName(last),getCurrentLastName()]} title='confirm'>
           <Text style={{textAlign: "center", fontWeight: "bold"}}>CHANGE LAST NAME</Text>
           </TouchableOpacity>
           </ImageBackground>
@@ -169,7 +169,7 @@ function AccountSettings(navigation){
             />
             <View style={{padding: 3}}>
         <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1, padding: 5}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
-          <TouchableOpacity style={Style.container} onPress={() => updateEmail(email)} title='confirm'>
+          <TouchableOpacity style={Style.container} onPress={() => [updateEmail(email), getCurrentEmail()]} title='confirm'>
           <Text style={{textAlign: "center", fontWeight: "bold"}}>CHANGE EMAIL ADDRESS</Text>
           </TouchableOpacity>
           </ImageBackground>
