@@ -22,7 +22,6 @@
  // Amplify AWS stuff
  import { Amplify, Auth, selectInput } from 'aws-amplify'
  import awsconfig from '../src/aws-exports'
-import { ConsoleLogger } from '@aws-amplify/core';
  Amplify.configure({
    ...awsconfig,
    Analytics: {
