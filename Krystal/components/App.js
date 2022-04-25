@@ -3,7 +3,7 @@
  *  Application hub
  */
  import 'react-native-gesture-handler'
- import React, { useState } from 'react';
+ import React, { useState,useEffect } from 'react';
  import { NavigationContainer } from '@react-navigation/native';
  import { createNativeStackNavigator } from '@react-navigation/native-stack';
  import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
@@ -20,8 +20,9 @@
  import FilterButton from './FilterButton'
 
  // Amplify AWS stuff
- import { Amplify, Auth } from 'aws-amplify'
+ import { Amplify, Auth, selectInput } from 'aws-amplify'
  import awsconfig from '../src/aws-exports'
+import { ConsoleLogger } from '@aws-amplify/core';
  Amplify.configure({
    ...awsconfig,
    Analytics: {
@@ -33,7 +34,7 @@
  const Stack = createNativeStackNavigator();
  const Drawer = createDrawerNavigator();
  
- const HomeDrawer = ({drawerNav, queue, search, setCurrentArticle, currentArticle}) => {
+ const HomeDrawer = ({check, drawerNav, queue, search, setCurrentArticle, currentArticle, currentFilters, setCurrentFilters}) => {
    return(
      <Stack.Navigator initialRouteName='home'
        screenOptions={{ 
@@ -41,7 +42,7 @@
              <Header 
                navigation={drawerNav}/>}}>
        <Stack.Screen name='home'
-          options={(props) => ({headerRight: () => (<FilterButton navigation={props.navigation}/>)})}>
+          options={(props) => ({headerRight: () => (<FilterButton check={check} navigation={props.navigation}/>)})}>
          { props => <Main 
          queue={queue}
          navigation={props.navigation}
@@ -59,7 +60,9 @@
         options={{ 
           presentation: 'modal',
           headerShown: false  }}>
-          { props => <Filter 
+          { props => <Filter
+          currentFilters={currentFilters} 
+          setCurrentFilters={setCurrentFilters}  
           navigation={props.navigation}/>}
        </Stack.Screen>
      </Stack.Navigator>
@@ -68,7 +71,38 @@
  
  // APP FUNCTION CALL 
  const App = () => {
- 
+ // State
+ const [ userInfo, setUserInfo ] = useState(null)
+ const [ currentArticle, setCurrentArticle ] = useState(null)
+ const [ forgotEmail, setForgotEmail ] = useState(null)
+ const [ currentFilters, setCurrentFilters ] = useState({})
+ const [ currentEntities, setCurrentEntities ] = useState([])
+ const [ queue, setQueue ] = useState([
+  {
+    key: 1,
+    title: 'Stone Burns',
+    author: 'Gavin Newsom',
+    description: 'The end times are upon us',
+    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html',
+    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
+    source: {
+      id: "bbc-news",
+      name: "BBC News"
+      },
+  },
+  {
+    key: 2,
+    title: 'Butterfly Away',
+    author: 'Miley Cyrus',
+    description: 'Idk I dont listen to Miley',
+    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic',
+    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
+    source: {
+      id: "bbc-news",
+      name: "BBC News"
+      },
+  }
+])
  // search 
  async function search(query){
    const date = new Date()
@@ -76,19 +110,20 @@
    let search_date=String(date.getFullYear())+'-'+String(date.getMonth() + 1)+'-'+String(date.getDate())  
    var url = 'https://newsapi.org/v2/everything?q=' + query + 
      '&from=' + search_date +'&sortBy=popularity&' +'apiKey='+ApiKey
- 
+
    var req=new Request(url)
    fetch(req).then((response) => {
      response.json().then((data)=>{
          // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
-        setQueue(data.articles.slice(0,20))
+        setQueue(data.articles.slice(0,20), this.findRoutes)
+        
       })
     })
     let user = await Auth.currentAuthenticatedUser();
-    let result = await Auth.updateUserAttributes(user, {
+    await Auth.updateUserAttributes(user, {
+      // slice this
         'custom:private_keys': query+','+user.attributes['custom:private_keys'],
     });
-    console.log(result)
  }
  async function attemptLogin(user, pass){
    try {
@@ -126,36 +161,39 @@
      alert(error)
    }
  } 
- // State
- const [ userInfo, setUserInfo ] = useState(null)
- const [ currentArticle, setCurrentArticle ] = useState(null)
- const [ forgotEmail, setForgotEmail ] = useState(null)
- const [ queue, setQueue ] = useState([
-  {
-    key: 1,
-    title: 'Stone Burns',
-    author: 'Gavin Newsom',
-    description: 'The end times are upon us',
-    url: 'https://www.nytimes.com/2020/04/02/us/coronavirus-apocalypse-religion.html',
-    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
-    source: {
-      id: "bbc-news",
-      name: "BBC News"
-      },
-  },
-  {
-    key: 2,
-    title: 'Butterfly Away',
-    author: 'Miley Cyrus',
-    description: 'Idk I dont listen to Miley',
-    url: 'https://www.youtube.com/watch?v=jjHNX_EBDus&ab_channel=MileyCyrus-Topic',
-    urlToImage: 'https://static9.depositphotos.com/1674252/1149/v/600/depositphotos_11496049-stock-illustration-warning-sign.jpg',
-    source: {
-      id: "bbc-news",
-      name: "BBC News"
-      },
-  }
-])
+  function updateEntities(){
+    let temp=[]
+   queue.forEach((article) => {
+     if( !temp.includes(article.source.name)){
+      temp=temp.concat(String(article.source.name))
+     }})
+    return temp
+ }
+ useEffect(() => {
+   setCurrentEntities(updateEntities())
+ }, [queue])
+ function check(){
+  
+  let entities=''
+  currentEntities.forEach((i) => {
+    entities+=i+','
+  })
+  Object.entries(currentFilters).forEach((i) => {
+    try{
+      let url = 'https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/entanglementrating?filter_id='+i[1]+'&articles='+entities
+      console.log(url)
+      let req=new Request(url)
+      fetch(req).then((response) => {
+        response.json().then((data)=>{
+          console.log(data)
+      })
+    })
+
+    }catch(error){
+      console.log(error)
+    }
+  })
+ }
  
  // RETURN
    return (
@@ -201,6 +239,9 @@
            )}}>
            <Drawer.Screen name='Home'>
              { props => <HomeDrawer 
+             check={check}
+             currentFilters={currentFilters}
+             setCurrentFilters={setCurrentFilters}
              queue={queue}
              drawerNav={props.navigation}
              search={search}

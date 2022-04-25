@@ -72,7 +72,7 @@ const Style=StyleSheet.create({
 })
 const text = StyleSheet.compose(Style.image, Style.title);
 
-function Article({ article, navigation, setCurrentArticle}) {
+function Article({ article, navigation, setCurrentArticle, status}) {
   var image = { uri: article.urlToImage};
   
   

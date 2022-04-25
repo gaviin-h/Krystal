@@ -2,15 +2,18 @@ import React, { useState } from 'react'
 import { StyleSheet, ScrollView} from 'react-native';
 import FilterBubble from './FilterBubble'
 
-export default function FilterContainer({ suggestResults, setSuggestionResults}){
-  const [ currentFilters, setCurrentFilters ] = useState([])
+export default function FilterContainer({ currentFilters, setCurrentFilters, suggestResults, setSuggestionResults}){
   function addTerm(term){
-    setCurrentFilters(currentFilters.concat(term))
-    setSuggestionResults(suggestResults.filter((cur) => cur !== term))
+    setCurrentFilters(currentFilters => ({
+      ...currentFilters,
+       [term]: suggestResults[term]}))
+    setSuggestionResults( Object.fromEntries(Object.entries(suggestResults).filter(([cur]) => cur !== term)))
   }
   function deleteTerm(term){
-    setCurrentFilters(currentFilters.filter((cur) => cur !== term))   
-    setSuggestionResults(suggestResults.concat( term ))
+    setCurrentFilters(  Object.fromEntries(Object.entries(currentFilters).filter(([cur]) => cur !== term)))
+    setSuggestionResults(suggestResults => ({
+      ...suggestResults,
+      [term] : currentFilters[term]}))
   }
   const Style = StyleSheet.create({
     container: {
@@ -38,13 +41,13 @@ export default function FilterContainer({ suggestResults, setSuggestionResults})
   })
   return (
     <ScrollView style={Style.container}>
-      {currentFilters? currentFilters.map((term) => 
+      {currentFilters? Object.keys(currentFilters).map((term) => 
       ( <FilterBubble 
           term={term}
           functionality={deleteTerm}
           style={Style.bubble1}
         /> )) : null}
-      {suggestResults? suggestResults.map((term) => 
+      {suggestResults?  Object.keys(suggestResults).map((term) => 
       ( <FilterBubble 
           term={term}
           functionality={addTerm}

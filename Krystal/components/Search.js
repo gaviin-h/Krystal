@@ -1,5 +1,5 @@
 import { View, TextInput, StyleSheet, Button, Text, ImageBackground} from 'react-native';
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
@@ -27,6 +27,7 @@ const Style=StyleSheet.create({
 
 function Search({search}) {
   const [ currentQuery, setCurrentQuery ] = useState()
+
   return (
     <View >
       <TextInput 
@@ -35,7 +36,9 @@ function Search({search}) {
         onChangeText={(text) => setCurrentQuery(text)}/>
        <View>
         <ImageBackground source={require('../gradient.jpg')} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
-          <TouchableOpacity style={Style.container} onPress={ () =>search(currentQuery)}>
+          <TouchableOpacity 
+            style={Style.container} 
+            onPress={ () => search(currentQuery)}>
           <Text style={{textAlign: "center", fontWeight: "bold"}}>SEARCH</Text>
           </TouchableOpacity>
           </ImageBackground>

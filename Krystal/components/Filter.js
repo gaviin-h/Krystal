@@ -2,27 +2,26 @@ import { View, TextInput, StyleSheet} from 'react-native';
 import React, { useState,useEffect } from 'react';
 import FilterContainer from './FilterContainer'
  
-  function Filter() {
+  function Filter({currentFilters, setCurrentFilters, navigation}) {
     const [ text, setText ] = useState()
     const [ suggestResults, setSuggestResults] = useState([])
     const [ oldText, setOldText ] = useState('')
     useEffect(() => {
       let isCancelled=false
       setTimeout(() => {
-        if(text!=='' && !isCancelled && oldText!==text){
+        if(text!=='' && text !==undefined&& !isCancelled && oldText!==text){
           setOldText(text)
           try{ 
             const url='https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/filtersuggest?query='+text
             console.log(url)
             fetch(url).then( response=>response.json().then( r=>{
               console.log(r.content)
-              setSuggestResults(Object.keys(r.content))
+              setSuggestResults(r.content)
               console.log(Object.keys(r.content))
             }))
           }catch (error){
             console.log(error)
-          }
-        }
+          }}
       }, 3000)
       
       return () => {
@@ -39,7 +38,12 @@ import FilterContainer from './FilterContainer'
             }}
             />
         </View>
-          {suggestResults ? <FilterContainer suggestResults={suggestResults} setSuggestionResults={setSuggestResults}/> : null}
+          {suggestResults ? 
+            <FilterContainer 
+              suggestResults={suggestResults} 
+              setSuggestionResults={setSuggestResults}
+              currentFilters={currentFilters}
+              setCurrentFilters={setCurrentFilters}/> : null}
       </View>
     )
   }
