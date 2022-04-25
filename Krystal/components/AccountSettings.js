@@ -8,11 +8,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer';
 import Header from './Header';
 import { UserAgent } from 'amazon-cognito-identity-js';
+import setUserInfo from './App';
 
 import { Amplify, Auth } from 'aws-amplify'
 
 function AccountSettings(navigation){
-    const [ userInfo, setUserInfo ] = useState(null)
+    //const [ userInfo, setUserInfo ] = useState(null)
     const [ first, setFirstName ] = useState(null)
     const [ last, setLastName ] = useState(null)
     const [ email, setEmailAddress ] = useState(null)
@@ -30,7 +31,7 @@ function AccountSettings(navigation){
         alert("This will permanently delete the current user account");
         const result = await Auth.deleteUser();
         setUserInfo(null);
-        navigation.navigate('login');
+        //navigation.navigate('login');
         console.log(result);
       } catch (error) {
         console.log('Error deleting user', error);
