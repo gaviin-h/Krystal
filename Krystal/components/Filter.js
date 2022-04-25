@@ -9,7 +9,7 @@ import FilterContainer from './FilterContainer'
     useEffect(() => {
       let isCancelled=false
       setTimeout(() => {
-        if(text!=='' && !isCancelled && oldText!==text){
+        if(text!=='' && text !==undefined&& !isCancelled && oldText!==text){
           setOldText(text)
           try{ 
             const url='https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/filtersuggest?query='+text

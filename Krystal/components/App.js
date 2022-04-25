@@ -3,7 +3,7 @@
  *  Application hub
  */
  import 'react-native-gesture-handler'
- import React, { useState } from 'react';
+ import React, { useState,useEffect } from 'react';
  import { NavigationContainer } from '@react-navigation/native';
  import { createNativeStackNavigator } from '@react-navigation/native-stack';
  import { createDrawerNavigator, DrawerItem, DrawerItemList, DrawerContentScrollView } from '@react-navigation/drawer'
@@ -22,6 +22,7 @@
  // Amplify AWS stuff
  import { Amplify, Auth, selectInput } from 'aws-amplify'
  import awsconfig from '../src/aws-exports'
+import { ConsoleLogger } from '@aws-amplify/core';
  Amplify.configure({
    ...awsconfig,
    Analytics: {
@@ -33,7 +34,7 @@
  const Stack = createNativeStackNavigator();
  const Drawer = createDrawerNavigator();
  
- const HomeDrawer = ({drawerNav, queue, search, setCurrentArticle, currentArticle, currentFilters, setCurrentFilters}) => {
+ const HomeDrawer = ({check, drawerNav, queue, search, setCurrentArticle, currentArticle, currentFilters, setCurrentFilters}) => {
    return(
      <Stack.Navigator initialRouteName='home'
        screenOptions={{ 
@@ -41,7 +42,7 @@
              <Header 
                navigation={drawerNav}/>}}>
        <Stack.Screen name='home'
-          options={(props) => ({headerRight: () => (<FilterButton navigation={props.navigation}/>)})}>
+          options={(props) => ({headerRight: () => (<FilterButton check={check} navigation={props.navigation}/>)})}>
          { props => <Main 
          queue={queue}
          navigation={props.navigation}
@@ -109,14 +110,13 @@
    let search_date=String(date.getFullYear())+'-'+String(date.getMonth() + 1)+'-'+String(date.getDate())  
    var url = 'https://newsapi.org/v2/everything?q=' + query + 
      '&from=' + search_date +'&sortBy=popularity&' +'apiKey='+ApiKey
- 
+
    var req=new Request(url)
    fetch(req).then((response) => {
      response.json().then((data)=>{
          // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
-        setQueue(data.articles.slice(0,20))
-        updateEntities()
-        console.log(currentEntities)
+        setQueue(data.articles.slice(0,20), this.findRoutes)
+        
       })
     })
     let user = await Auth.currentAuthenticatedUser();
@@ -161,28 +161,31 @@
      alert(error)
    }
  } 
- function updateEntities(){
-   setCurrentEntities([])
-   let temp=[]
+  function updateEntities(){
+    let temp=[]
    queue.forEach((article) => {
      if( !temp.includes(article.source.name)){
-       temp.concat(article.source.name)
-       console.log(temp)
+      temp=temp.concat(String(article.source.name))
      }})
-    setCurrentEntities(temp)
+    return temp
  }
- async function check(){
+ useEffect(() => {
+   setCurrentEntities(updateEntities())
+ }, [queue])
+ function check(){
+  
   let entities=''
   currentEntities.forEach((i) => {
     entities+=i+','
   })
-  Object.keys(currentFilters).forEach((i) => {
+  Object.entries(currentFilters).forEach((i) => {
     try{
-      let url = 'https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/entanglementrating?filter_id='+currentFilters[i]+'articles'+entities
+      let url = 'https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/entanglementrating?filter_id='+i[1]+'&articles'+entities
+      console.log(url)
       let req=new Request(url)
       fetch(req).then((response) => {
         response.json().then((data)=>{
-         // pass json to function to distribute its contents to the div selected (in REACT this is much easier)
+          console.log(data)
       })
     })
 
@@ -236,6 +239,7 @@
            )}}>
            <Drawer.Screen name='Home'>
              { props => <HomeDrawer 
+             check={check}
              currentFilters={currentFilters}
              setCurrentFilters={setCurrentFilters}
              queue={queue}
