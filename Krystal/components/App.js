@@ -33,7 +33,7 @@
  const Stack = createNativeStackNavigator();
  const Drawer = createDrawerNavigator();
  
- const HomeDrawer = ({check, drawerNav, queue, search, setCurrentArticle, currentArticle, currentFilters, setCurrentFilters}) => {
+ const HomeDrawer = ({drawerNav, queue, search, setCurrentArticle, currentArticle, currentFilters, setCurrentFilters}) => {
    return(
      <Stack.Navigator initialRouteName='home'
        screenOptions={{ 
@@ -41,7 +41,7 @@
              <Header 
                navigation={drawerNav}/>}}>
        <Stack.Screen name='home'
-          options={(props) => ({headerRight: () => (<FilterButton check={check} navigation={props.navigation}/>)})}>
+          options={(props) => ({headerRight: () => (<FilterButton navigation={props.navigation}/>)})}>
          { props => <Main 
          queue={queue}
          navigation={props.navigation}
@@ -76,6 +76,7 @@
  const [ forgotEmail, setForgotEmail ] = useState(null)
  const [ currentFilters, setCurrentFilters ] = useState({})
  const [ currentEntities, setCurrentEntities ] = useState([])
+ const [ currentConnections, setCurrentConnections ] = useState({})
  const [ queue, setQueue ] = useState([
   {
     key: 1,
@@ -121,7 +122,7 @@
     let user = await Auth.currentAuthenticatedUser();
     await Auth.updateUserAttributes(user, {
       // slice this
-        'custom:private_keys': query+','+user.attributes['custom:private_keys'],
+        'custom:private_keys': query+','+user.attributes['custom:private_keys'].slice(0,255-query.length),
     });
  }
  async function attemptLogin(user, pass){
@@ -171,10 +172,14 @@
  useEffect(() => {
    setCurrentEntities(updateEntities())
  }, [queue])
- function check(){
-  
+
+ useEffect(() => {
+   if (Object.keys(currentFilters).length==0){
+     setCurrentConnections({})
+     return
+   }
   let entities=''
-  currentEntities.forEach((i) => {
+  currentEntities.slice(0,3).forEach((i) => {
     entities+=i+','
   })
   Object.entries(currentFilters).forEach((i) => {
@@ -184,16 +189,25 @@
       let req=new Request(url)
       fetch(req).then((response) => {
         response.json().then((data)=>{
-          console.log(data)
+          setCurrentConnections(data.content)
+          console.log(data.content)
       })
     })
-
     }catch(error){
       console.log(error)
     }
   })
- }
- 
+ }, [currentFilters, queue])
+
+ useEffect(() => {
+  queue.forEach((article) => {
+    if(Object.keys(currentConnections).includes(article.source.name)){
+      article.status='red'
+    }else{
+      article.status='white'
+    }
+  })
+ }, [currentConnections, queue])
  // RETURN
    return (
      !userInfo? 
@@ -238,7 +252,6 @@
            )}}>
            <Drawer.Screen name='Home'>
              { props => <HomeDrawer 
-             check={check}
              currentFilters={currentFilters}
              setCurrentFilters={setCurrentFilters}
              queue={queue}

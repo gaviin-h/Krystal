@@ -84,7 +84,7 @@ function Article({ article, navigation, setCurrentArticle, status}) {
         setCurrentArticle(article)
         navigation.navigate('articlePage')}}>
          
-      <ImageBackground source={image} resizeMode="cover" style={{ backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
+      <ImageBackground source={image} resizeMode="cover" style={article.status? { backgroundColor: article.status, borderRadius: 6, borderColor:'gray', borderWidth: 1} : { backgroundColor: 'white', borderRadius: 6, borderColor:'gray', borderWidth: 1}}  imageStyle={{ borderRadius: 6 ,borderColor: 'gray', opacity: 0.5}}>
       <View style={Style.header}>
       <Image resizeMode='cover' source={getLogo(article)} style={{maxWidth:50,height:50, borderRadius: 6, borderColor:'gray'}}></Image>
       <Text style={Style.title}>
