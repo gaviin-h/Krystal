@@ -213,16 +213,23 @@
              currentArticle={currentArticle}/>}
            </Drawer.Screen>
            <Drawer.Screen name="Account Settings"
-            options={ (props) => ({
+            options={{
               headerShown: true,
               // headerTitle: () => <Header
               //  navigation={props.navigation}/> 
-            })}>
+            }}>
              {props => <AccountSettings 
              navigation={props.navigation}
-             userInfo = {userInfo}/>}
+            />}
            </Drawer.Screen>
-           <Drawer.Screen name="Content Settings"options={ (props) => ({
+           
+          </Drawer.Navigator>
+       </NavigationContainer>
+   );
+ };
+ 
+ /*
+<Drawer.Screen name="Content Settings"options={ (props) => ({
               headerShown: true,
              // headerTitle: () => <Header
                //navigation={props.navigation}/> 
@@ -230,9 +237,5 @@
              {props => <ContentSettings 
              navigation={props.navigation}/>}
            </Drawer.Screen>
-          </Drawer.Navigator>
-       </NavigationContainer>
-   );
- };
- 
+ */
  export default App;
