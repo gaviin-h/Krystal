@@ -180,7 +180,7 @@ import { ConsoleLogger } from '@aws-amplify/core';
   })
   Object.entries(currentFilters).forEach((i) => {
     try{
-      let url = 'https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/entanglementrating?filter_id='+i[1]+'&articles'+entities
+      let url = 'https://v7c79w6j85.execute-api.us-west-2.amazonaws.com/dev/entanglementrating?filter_id='+i[1]+'&articles='+entities
       console.log(url)
       let req=new Request(url)
       fetch(req).then((response) => {
