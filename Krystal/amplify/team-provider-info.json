@@ -27,7 +27,7 @@
         },
         "EntanglementRating": {
           "deploymentBucketName": "amplify-krystal-dev-213131-deployment",
-          "s3Key": "amplify-builds/EntanglementRating-5538637a6b744c63496c-build.zip"
+          "s3Key": "amplify-builds/EntanglementRating-7832656c7a4e4d413955-build.zip"
         }
       }
     }

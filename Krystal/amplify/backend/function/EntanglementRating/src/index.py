@@ -1,6 +1,5 @@
 
 import requests
-import time
 
 def handler(event, context=None):
 
@@ -62,11 +61,11 @@ def handler(event, context=None):
 	#####														#####
 
 
-	def build_list(_id, related=[]):
-		if len(related)==0:
-			related.append(_id)
+	def build_list(_id):
+		# if len(related)==0:
+		# 	related.append(_id)
+		related=[_id]
 		try:
-			time.sleep(.2)
 			url=f'https://littlesis.org/api/entities/{_id}/relationships'
 			r=requests.get(url).json()
 			for child in r['data']:
@@ -74,14 +73,14 @@ def handler(event, context=None):
 				if new_id not in related:
 					related.append(new_id)
 		except requests.JSONDecodeError:
-			return build_list(_id, related)
+			return build_list(_id)
 		return related
 
 	def get_id(_name):
 		url=f'https://littlesis.org/api/entities/search?q={_name}'
 		try:
 			req=requests.get(url).json()
-			r=req['data'][0]['id']
+			r=req['data'][0]['id'] if len(req['data'])>0 else -1
 			return r
 		except Exception as e:
 			print(e)
@@ -91,25 +90,32 @@ def handler(event, context=None):
 	## MAIN METHOD ## 
 	#################
 	root=build_list(int(event['filter_id']))
+	print(f'root\n\n{root}')
 	for i in root[1:10]:
-		root=build_list(i, root)
+		root+=build_list(i)
 	root_set=set(root)
 	connections={}
 	# leaves=[]
 	# go through current queue and resolve entities in the form {id: name}
-	for i in event['articles'].split(','):
+	for i in event['articles'].split(',')[:-1]:
 		# get the id of the top result and assume for now
 		# maybe use the website to cross reference in the future?
 		article_id=None
 		while article_id==None:
-			time.sleep(.2)
 			article_id=get_id(i)
-		leaf=build_list(article_id)
+		print(article_id)
+		print('\n\n')
+		leaf=build_list(article_id) if article_id > 0 else []
+		print(f'leaf\n\n{leaf}')
 		# leaves+=leaf
-		if bool( root_set & set(leaf)):
+		if len( list(root_set.intersection(leaf)))>0:
+			print(f'intersection\n\n{list(root_set.intersection(leaf))}')
+
 			connections[i]=root[0]
 
 	return {
     'content': connections
   }
-
+# import json
+# event=json.load(open('amplify/backend/function/EntanglementRating/src/event.json', 'r'))
+# print(handler(event))
